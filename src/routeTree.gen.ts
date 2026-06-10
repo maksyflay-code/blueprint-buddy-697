@@ -10,17 +10,26 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SolicitacoesRouteImport } from './routes/solicitacoes'
+import { Route as ObrasRouteImport } from './routes/obras'
 import { Route as ManutencaoRouteImport } from './routes/manutencao'
 import { Route as LocacoesRouteImport } from './routes/locacoes'
+import { Route as LicitacoesRouteImport } from './routes/licitacoes'
 import { Route as FinanceiroRouteImport } from './routes/financeiro'
+import { Route as EquipeRouteImport } from './routes/equipe'
 import { Route as EquipamentosRouteImport } from './routes/equipamentos'
 import { Route as DocumentosRouteImport } from './routes/documentos'
+import { Route as ComprasRouteImport } from './routes/compras'
 import { Route as ClientesRouteImport } from './routes/clientes'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SolicitacoesRoute = SolicitacoesRouteImport.update({
   id: '/solicitacoes',
   path: '/solicitacoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ObrasRoute = ObrasRouteImport.update({
+  id: '/obras',
+  path: '/obras',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ManutencaoRoute = ManutencaoRouteImport.update({
@@ -33,9 +42,19 @@ const LocacoesRoute = LocacoesRouteImport.update({
   path: '/locacoes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LicitacoesRoute = LicitacoesRouteImport.update({
+  id: '/licitacoes',
+  path: '/licitacoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FinanceiroRoute = FinanceiroRouteImport.update({
   id: '/financeiro',
   path: '/financeiro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EquipeRoute = EquipeRouteImport.update({
+  id: '/equipe',
+  path: '/equipe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EquipamentosRoute = EquipamentosRouteImport.update({
@@ -46,6 +65,11 @@ const EquipamentosRoute = EquipamentosRouteImport.update({
 const DocumentosRoute = DocumentosRouteImport.update({
   id: '/documentos',
   path: '/documentos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComprasRoute = ComprasRouteImport.update({
+  id: '/compras',
+  path: '/compras',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ClientesRoute = ClientesRouteImport.update({
@@ -62,32 +86,44 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRoute
+  '/compras': typeof ComprasRoute
   '/documentos': typeof DocumentosRoute
   '/equipamentos': typeof EquipamentosRoute
+  '/equipe': typeof EquipeRoute
   '/financeiro': typeof FinanceiroRoute
+  '/licitacoes': typeof LicitacoesRoute
   '/locacoes': typeof LocacoesRoute
   '/manutencao': typeof ManutencaoRoute
+  '/obras': typeof ObrasRoute
   '/solicitacoes': typeof SolicitacoesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRoute
+  '/compras': typeof ComprasRoute
   '/documentos': typeof DocumentosRoute
   '/equipamentos': typeof EquipamentosRoute
+  '/equipe': typeof EquipeRoute
   '/financeiro': typeof FinanceiroRoute
+  '/licitacoes': typeof LicitacoesRoute
   '/locacoes': typeof LocacoesRoute
   '/manutencao': typeof ManutencaoRoute
+  '/obras': typeof ObrasRoute
   '/solicitacoes': typeof SolicitacoesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRoute
+  '/compras': typeof ComprasRoute
   '/documentos': typeof DocumentosRoute
   '/equipamentos': typeof EquipamentosRoute
+  '/equipe': typeof EquipeRoute
   '/financeiro': typeof FinanceiroRoute
+  '/licitacoes': typeof LicitacoesRoute
   '/locacoes': typeof LocacoesRoute
   '/manutencao': typeof ManutencaoRoute
+  '/obras': typeof ObrasRoute
   '/solicitacoes': typeof SolicitacoesRoute
 }
 export interface FileRouteTypes {
@@ -95,42 +131,58 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/clientes'
+    | '/compras'
     | '/documentos'
     | '/equipamentos'
+    | '/equipe'
     | '/financeiro'
+    | '/licitacoes'
     | '/locacoes'
     | '/manutencao'
+    | '/obras'
     | '/solicitacoes'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/clientes'
+    | '/compras'
     | '/documentos'
     | '/equipamentos'
+    | '/equipe'
     | '/financeiro'
+    | '/licitacoes'
     | '/locacoes'
     | '/manutencao'
+    | '/obras'
     | '/solicitacoes'
   id:
     | '__root__'
     | '/'
     | '/clientes'
+    | '/compras'
     | '/documentos'
     | '/equipamentos'
+    | '/equipe'
     | '/financeiro'
+    | '/licitacoes'
     | '/locacoes'
     | '/manutencao'
+    | '/obras'
     | '/solicitacoes'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ClientesRoute: typeof ClientesRoute
+  ComprasRoute: typeof ComprasRoute
   DocumentosRoute: typeof DocumentosRoute
   EquipamentosRoute: typeof EquipamentosRoute
+  EquipeRoute: typeof EquipeRoute
   FinanceiroRoute: typeof FinanceiroRoute
+  LicitacoesRoute: typeof LicitacoesRoute
   LocacoesRoute: typeof LocacoesRoute
   ManutencaoRoute: typeof ManutencaoRoute
+  ObrasRoute: typeof ObrasRoute
   SolicitacoesRoute: typeof SolicitacoesRoute
 }
 
@@ -141,6 +193,13 @@ declare module '@tanstack/react-router' {
       path: '/solicitacoes'
       fullPath: '/solicitacoes'
       preLoaderRoute: typeof SolicitacoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/obras': {
+      id: '/obras'
+      path: '/obras'
+      fullPath: '/obras'
+      preLoaderRoute: typeof ObrasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/manutencao': {
@@ -157,11 +216,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocacoesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/licitacoes': {
+      id: '/licitacoes'
+      path: '/licitacoes'
+      fullPath: '/licitacoes'
+      preLoaderRoute: typeof LicitacoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/financeiro': {
       id: '/financeiro'
       path: '/financeiro'
       fullPath: '/financeiro'
       preLoaderRoute: typeof FinanceiroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/equipe': {
+      id: '/equipe'
+      path: '/equipe'
+      fullPath: '/equipe'
+      preLoaderRoute: typeof EquipeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/equipamentos': {
@@ -176,6 +249,13 @@ declare module '@tanstack/react-router' {
       path: '/documentos'
       fullPath: '/documentos'
       preLoaderRoute: typeof DocumentosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compras': {
+      id: '/compras'
+      path: '/compras'
+      fullPath: '/compras'
+      preLoaderRoute: typeof ComprasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/clientes': {
@@ -198,13 +278,27 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ClientesRoute: ClientesRoute,
+  ComprasRoute: ComprasRoute,
   DocumentosRoute: DocumentosRoute,
   EquipamentosRoute: EquipamentosRoute,
+  EquipeRoute: EquipeRoute,
   FinanceiroRoute: FinanceiroRoute,
+  LicitacoesRoute: LicitacoesRoute,
   LocacoesRoute: LocacoesRoute,
   ManutencaoRoute: ManutencaoRoute,
+  ObrasRoute: ObrasRoute,
   SolicitacoesRoute: SolicitacoesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

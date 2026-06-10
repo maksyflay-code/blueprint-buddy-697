@@ -570,3 +570,152 @@ export const utilizacaoPorCategoria = [
   { categoria: "Betoneiras", percentual: 82, total: 18 },
   { categoria: "Rolos Compactadores", percentual: 70, total: 6 },
 ];
+
+// ============================================================
+// LICITAÇÕES
+// ============================================================
+export type LicitacaoStatus =
+  | "monitorando"
+  | "preparando"
+  | "enviada"
+  | "habilitada"
+  | "vencida"
+  | "perdida";
+
+export interface Licitacao {
+  id: string;
+  numero: string;
+  orgao: string;
+  modalidade: "Pregão Eletrônico" | "Concorrência" | "Tomada de Preços" | "RDC" | "Dispensa";
+  objeto: string;
+  uf: string;
+  valorEstimado: number;
+  valorProposta?: number;
+  abertura: string;
+  prazoEntrega: string;
+  status: LicitacaoStatus;
+  responsavel: string;
+  probabilidade: number;
+  documentos: number;
+}
+
+export const licitacoes: Licitacao[] = [
+  { id: "l1", numero: "PE 045/2026 — DNIT", orgao: "DNIT - Superintendência SC", modalidade: "Pregão Eletrônico", objeto: "Recuperação de pavimento BR-282 km 120-180", uf: "SC", valorEstimado: 8420000, valorProposta: 7980000, abertura: "18 Jun, 10:00", prazoEntrega: "Em 6 dias", status: "preparando", responsavel: "Eng. Roberta", probabilidade: 72, documentos: 14 },
+  { id: "l2", numero: "CC 012/2026 — DER/SP", orgao: "DER - São Paulo", modalidade: "Concorrência", objeto: "Construção de viaduto sobre Rodovia Anhanguera", uf: "SP", valorEstimado: 24800000, valorProposta: 23150000, abertura: "25 Jun, 14:30", prazoEntrega: "Em 13 dias", status: "preparando", responsavel: "Eng. Ricardo M.", probabilidade: 55, documentos: 28 },
+  { id: "l3", numero: "PE 119/2026 — Pref. BH", orgao: "Prefeitura de Belo Horizonte", modalidade: "Pregão Eletrônico", objeto: "Locação de retroescavadeiras e basculantes 12m", uf: "MG", valorEstimado: 1850000, valorProposta: 1740000, abertura: "05 Jun, 09:00", prazoEntrega: "Encerrada", status: "vencida", responsavel: "Ana Paula", probabilidade: 100, documentos: 11 },
+  { id: "l4", numero: "TP 008/2026 — SANEPAR", orgao: "SANEPAR - Paraná", modalidade: "Tomada de Preços", objeto: "Rede coletora de esgoto - Bairro Boqueirão", uf: "PR", valorEstimado: 3420000, abertura: "30 Jun, 15:00", prazoEntrega: "Em 18 dias", status: "monitorando", responsavel: "Eng. Roberta", probabilidade: 40, documentos: 3 },
+  { id: "l5", numero: "PE 077/2026 — CODESP", orgao: "CODESP - Porto Santos", modalidade: "Pregão Eletrônico", objeto: "Terraplanagem retroárea cais 12", uf: "SP", valorEstimado: 5680000, valorProposta: 5320000, abertura: "02 Jun, 11:00", prazoEntrega: "Habilitação técnica", status: "enviada", responsavel: "Eng. Ricardo M.", probabilidade: 65, documentos: 19 },
+  { id: "l6", numero: "PE 022/2026 — INFRAERO", orgao: "INFRAERO - Aeroporto SDU", modalidade: "Pregão Eletrônico", objeto: "Reforço de pista de pouso e taxiway", uf: "RJ", valorEstimado: 12500000, valorProposta: 12800000, abertura: "28 Mai, 14:00", prazoEntrega: "Encerrada", status: "perdida", responsavel: "Eng. Ricardo M.", probabilidade: 0, documentos: 22 },
+];
+
+// ============================================================
+// OBRAS
+// ============================================================
+export type ObraStatus = "planejamento" | "execucao" | "paralisada" | "concluida";
+
+export interface Obra {
+  id: string;
+  codigo: string;
+  nome: string;
+  contratante: string;
+  cidade: string;
+  uf: string;
+  inicio: string;
+  prazoFim: string;
+  valorContrato: number;
+  medido: number;
+  fisico: number;
+  financeiro: number;
+  status: ObraStatus;
+  responsavel: string;
+  equipe: number;
+  equipamentos: number;
+  alerta?: string;
+}
+
+export const obras: Obra[] = [
+  { id: "o1", codigo: "OB-024", nome: "Rodovia BR-101 Sul — Lote 03", contratante: "DNIT", cidade: "Tubarão", uf: "SC", inicio: "10 Fev 2026", prazoFim: "30 Out 2026", valorContrato: 18420000, medido: 11420000, fisico: 62, financeiro: 58, status: "execucao", responsavel: "Eng. Roberta", equipe: 42, equipamentos: 12 },
+  { id: "o2", codigo: "OB-022", nome: "Estádio Nacional — Fundações", contratante: "ConstruTec S.A.", cidade: "Brasília", uf: "DF", inicio: "05 Jan 2026", prazoFim: "20 Set 2026", valorContrato: 9850000, medido: 4720000, fisico: 48, financeiro: 48, status: "execucao", responsavel: "Eng. Ricardo M.", equipe: 28, equipamentos: 7 },
+  { id: "o3", codigo: "OB-019", nome: "Skyline Tower — Estrutura", contratante: "Construtora Norberto", cidade: "Rio de Janeiro", uf: "RJ", inicio: "20 Nov 2025", prazoFim: "20 Mai 2026", valorContrato: 14200000, medido: 12800000, fisico: 92, financeiro: 90, status: "execucao", responsavel: "Eng. Ricardo M.", equipe: 34, equipamentos: 5 },
+  { id: "o4", codigo: "OB-017", nome: "Asfaltamento Av. Brasil", contratante: "Pavitec Ltda", cidade: "Curitiba", uf: "PR", inicio: "10 Dez 2025", prazoFim: "10 Abr 2026", valorContrato: 4250000, medido: 1980000, fisico: 41, financeiro: 46, status: "paralisada", responsavel: "Eng. Roberta", equipe: 0, equipamentos: 2, alerta: "Aguardando liberação ambiental" },
+  { id: "o5", codigo: "OB-025", nome: "Galpão Industrial Cajamar", contratante: "GME Construções", cidade: "Cajamar", uf: "SP", inicio: "01 Jun 2026", prazoFim: "15 Dez 2026", valorContrato: 6720000, medido: 0, fisico: 3, financeiro: 0, status: "planejamento", responsavel: "Eng. Ricardo M.", equipe: 4, equipamentos: 0 },
+  { id: "o6", codigo: "OB-015", nome: "Canteiro Alphaville IV", contratante: "Duran Engenharia", cidade: "Barueri", uf: "SP", inicio: "01 Ago 2025", prazoFim: "01 Mar 2026", valorContrato: 5180000, medido: 5180000, fisico: 100, financeiro: 100, status: "concluida", responsavel: "Eng. Roberta", equipe: 0, equipamentos: 0 },
+];
+
+// ============================================================
+// EQUIPE / RH
+// ============================================================
+export interface Colaborador {
+  id: string;
+  nome: string;
+  cargo: string;
+  setor: "Engenharia" | "Obra" | "Oficina" | "Administrativo" | "Comercial";
+  obraAtual?: string;
+  status: "ativo" | "ferias" | "afastado";
+  aso: { vencimento: string; ok: boolean };
+  nrs: string[];
+  ctps: string;
+  iniciais: string;
+}
+
+export const equipe: Colaborador[] = [
+  { id: "e1", nome: "Eng. Ricardo Moreira", cargo: "Engenheiro Civil Sênior", setor: "Engenharia", obraAtual: "OB-022 Estádio Nacional", status: "ativo", aso: { vencimento: "12 Set 2026", ok: true }, nrs: ["NR-18", "NR-35", "NR-10"], ctps: "CREA 124589-D", iniciais: "RM" },
+  { id: "e2", nome: "Eng. Roberta Lemos", cargo: "Engenheira de Produção", setor: "Engenharia", obraAtual: "OB-024 BR-101 Sul", status: "ativo", aso: { vencimento: "04 Ago 2026", ok: true }, nrs: ["NR-12", "NR-18", "NR-33"], ctps: "CREA 187420-D", iniciais: "RL" },
+  { id: "e3", nome: "Carlos Eduardo Santos", cargo: "Encarregado de Oficina", setor: "Oficina", status: "ativo", aso: { vencimento: "22 Jul 2026", ok: true }, nrs: ["NR-12", "NR-10"], ctps: "CTPS 88421-02", iniciais: "CS" },
+  { id: "e4", nome: "Marcio Silva", cargo: "Mecânico Industrial", setor: "Oficina", status: "ativo", aso: { vencimento: "28 Jun 2026", ok: false }, nrs: ["NR-12"], ctps: "CTPS 92011-04", iniciais: "MS" },
+  { id: "e5", nome: "Ana Paula Ribeiro", cargo: "Coordenadora Comercial", setor: "Comercial", status: "ativo", aso: { vencimento: "10 Jan 2027", ok: true }, nrs: [], ctps: "CTPS 65120-01", iniciais: "AP" },
+  { id: "e6", nome: "Felipe Tavares", cargo: "Operador de Máquinas Pesadas", setor: "Obra", obraAtual: "OB-019 Skyline Tower", status: "ativo", aso: { vencimento: "15 Ago 2026", ok: true }, nrs: ["NR-12", "NR-18", "NR-35"], ctps: "CTPS 71203-03", iniciais: "FT" },
+  { id: "e7", nome: "Juliana Alves", cargo: "Assistente Administrativo", setor: "Administrativo", status: "ferias", aso: { vencimento: "30 Mar 2027", ok: true }, nrs: [], ctps: "CTPS 44587-02", iniciais: "JA" },
+  { id: "e8", nome: "Pedro Henrique Costa", cargo: "Mestre de Obras", setor: "Obra", obraAtual: "OB-024 BR-101 Sul", status: "ativo", aso: { vencimento: "18 Out 2026", ok: true }, nrs: ["NR-18", "NR-35", "NR-33"], ctps: "CTPS 33890-01", iniciais: "PC" },
+];
+
+// ============================================================
+// COMPRAS / SUPRIMENTOS
+// ============================================================
+export interface OrdemCompra {
+  id: string;
+  numero: string;
+  fornecedor: string;
+  obra: string;
+  itens: string;
+  valor: number;
+  emissao: string;
+  entregaPrevista: string;
+  status: "cotacao" | "aprovacao" | "emitida" | "recebida" | "atrasada";
+  comprador: string;
+}
+
+export const compras: OrdemCompra[] = [
+  { id: "p1", numero: "OC-3421", fornecedor: "Aço Norte Distribuidora", obra: "OB-024 BR-101 Sul", itens: "Vergalhão CA-50 (12 t) + tela soldada Q-196", valor: 184500, emissao: "08 Jun", entregaPrevista: "15 Jun", status: "emitida", comprador: "Ana Paula" },
+  { id: "p2", numero: "OC-3420", fornecedor: "Concrebrás Concreto", obra: "OB-022 Estádio Nacional", itens: "Concreto usinado FCK 30 — 240 m³", valor: 96400, emissao: "08 Jun", entregaPrevista: "12 Jun", status: "emitida", comprador: "Ana Paula" },
+  { id: "p3", numero: "OC-3418", fornecedor: "Hidráulica Diesel Ltda", obra: "Pátio Central — Frota", itens: "Kit reparo bomba hidráulica CAT 320", valor: 14800, emissao: "06 Jun", entregaPrevista: "10 Jun", status: "recebida", comprador: "Marcio Silva" },
+  { id: "p4", numero: "OC-3417", fornecedor: "Petrobrás Distribuidora", obra: "Frota Geral", itens: "Diesel S-10 — 8.000 L", valor: 48200, emissao: "05 Jun", entregaPrevista: "07 Jun", status: "atrasada", comprador: "Felipe Tavares" },
+  { id: "p5", numero: "OC-3415", fornecedor: "EPI Brasil Segurança", obra: "Geral", itens: "Capacetes, botas e cintos NR-35 (lote)", valor: 11200, emissao: "03 Jun", entregaPrevista: "10 Jun", status: "aprovacao", comprador: "Juliana Alves" },
+  { id: "p6", numero: "COT-0992", fornecedor: "3 fornecedores em análise", obra: "OB-025 Galpão Cajamar", itens: "Estrutura metálica — 84 t", valor: 1240000, emissao: "02 Jun", entregaPrevista: "—", status: "cotacao", comprador: "Ana Paula" },
+];
+
+// ============================================================
+// KPIs EXECUTIVOS
+// ============================================================
+export const kpisExecutivo = {
+  obrasAtivas: 4,
+  obrasValor: 47120000,
+  licitacoesAbertas: 4,
+  licitacoesValor: 38380000,
+  taxaSucesso: 38,
+  receitaLocacao: 284500,
+  receitaObras: 1840000,
+  margemBruta: 22.4,
+  contasReceber: 1280400,
+  contasPagar: 740200,
+  colaboradores: 142,
+  asoVencendo: 3,
+};
+
+export const pipelineFunil = [
+  { etapa: "Monitorando", quantidade: 12, valor: 42800000 },
+  { etapa: "Preparando", quantidade: 5, valor: 38420000 },
+  { etapa: "Enviada", quantidade: 3, valor: 18650000 },
+  { etapa: "Habilitada", quantidade: 2, valor: 9420000 },
+  { etapa: "Vencida (mês)", quantidade: 2, valor: 4180000 },
+];
