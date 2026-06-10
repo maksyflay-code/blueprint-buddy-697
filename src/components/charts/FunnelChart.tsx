@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 export interface FunnelStage {
   etapa: string;
   quantidade: number;
@@ -12,8 +10,6 @@ function fmtM(v: number) {
 }
 
 export function FunnelChartCustom({ data }: { data: FunnelStage[] }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
   const max = Math.max(...data.map((d) => d.valor));
 
   return (
@@ -40,7 +36,7 @@ export function FunnelChartCustom({ data }: { data: FunnelStage[] }) {
               <div
                 className="h-full rounded-sm transition-all duration-500 ease-out relative overflow-hidden"
                 style={{
-                  width: mounted ? `${widthPct}%` : "0%",
+                  width: `${widthPct}%`,
                   background: `linear-gradient(90deg,
                     color-mix(in oklab, var(--primary) ${85 * intensity}%, transparent) 0%,
                     color-mix(in oklab, var(--primary) ${55 * intensity}%, transparent) 100%)`,
