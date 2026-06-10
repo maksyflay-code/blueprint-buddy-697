@@ -22,7 +22,7 @@ function SolicitacoesPage() {
 
   return (
     <AppLayout>
-      <div className="p-8 space-y-6">
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6">
         <PageHeader
           title="Solicitações Internas"
           subtitle="Fluxo de aprovação para manutenções, mobilizações e compras"
@@ -33,7 +33,7 @@ function SolicitacoesPage() {
           }
         />
 
-        <div className="flex gap-2 border-b border-border pb-2">
+        <div className="flex gap-2 border-b border-border pb-2 overflow-x-auto">
           {(["todas", "pendente", "andamento", "aprovado"] as const).map((f) => (
             <button
               key={f}
@@ -49,8 +49,8 @@ function SolicitacoesPage() {
           ))}
         </div>
 
-        <div className="grid grid-cols-3 gap-6">
-          <div className="col-span-2 space-y-3">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+          <div className="lg:col-span-2 space-y-3">
             {filtered.map((r, i) => {
               const sb = statusBadge[r.status];
               return (
@@ -59,8 +59,8 @@ function SolicitacoesPage() {
                   className="bg-card border border-border rounded-md p-5 animate-in-up hover:border-primary/40 transition-colors"
                   style={{ animationDelay: `${i * 40}ms` }}
                 >
-                  <div className="flex items-start justify-between gap-4 mb-3">
-                    <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                       <span className="text-[10px] font-mono text-primary bg-primary/10 px-2 py-1 rounded">
                         #{r.numero}
                       </span>
@@ -120,14 +120,14 @@ function SolicitacoesPage() {
                   )}
 
                   {r.status === "pendente" && (
-                    <div className="flex gap-2 mt-4 pt-4 border-t border-border">
+                    <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-border">
                       <button className="px-4 py-2 bg-primary text-primary-foreground text-xs font-bold rounded uppercase tracking-wider hover:bg-primary/90 transition-colors">
                         Aprovar
                       </button>
                       <button className="px-4 py-2 border border-border text-xs font-bold rounded uppercase text-muted-foreground hover:bg-accent transition-colors">
                         Rejeitar
                       </button>
-                      <button className="ml-auto px-4 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
+                      <button className="sm:ml-auto px-4 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
                         Solicitar Detalhes
                       </button>
                     </div>
@@ -138,7 +138,7 @@ function SolicitacoesPage() {
           </div>
 
           {/* Quick request panel */}
-          <div className="space-y-4 sticky top-20 self-start">
+          <div className="space-y-4 lg:sticky lg:top-20 lg:self-start">
             <div className="bg-card border border-border rounded-md p-5">
               <h3 className="text-sm font-bold mb-1">Nova Solicitação Rápida</h3>
               <p className="text-xs text-muted-foreground mb-4">

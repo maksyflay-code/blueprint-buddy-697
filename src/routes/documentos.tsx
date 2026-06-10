@@ -20,7 +20,7 @@ const tipoColors: Record<string, string> = {
 function DocumentosPage() {
   return (
     <AppLayout>
-      <div className="p-8 space-y-6">
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6">
         <PageHeader
           title="Documentos"
           subtitle={`${documentos.length} arquivos · contratos, ARTs, checklists e laudos técnicos`}
@@ -31,19 +31,19 @@ function DocumentosPage() {
           }
         />
 
-        <div className="flex items-center gap-3">
-          <div className="relative flex-1 max-w-md">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          <div className="relative flex-1 sm:max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             <input
               placeholder="Buscar por nome, vínculo ou tipo..."
               className="w-full bg-card border border-border rounded px-9 py-2 text-sm"
             />
           </div>
-          <div className="flex gap-1">
+          <div className="flex gap-1 overflow-x-auto -mx-1 px-1">
             {["Todos", "Contratos", "ARTs", "NF", "Laudos"].map((t) => (
               <button
                 key={t}
-                className="px-3 py-1.5 text-xs font-medium rounded hover:bg-accent transition-colors text-muted-foreground"
+                className="px-3 py-1.5 text-xs font-medium rounded hover:bg-accent transition-colors text-muted-foreground whitespace-nowrap"
               >
                 {t}
               </button>
@@ -52,6 +52,7 @@ function DocumentosPage() {
         </div>
 
         <div className="bg-card border border-border rounded-md overflow-hidden">
+          <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-accent/30 border-b border-border">
               <tr className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
@@ -101,6 +102,7 @@ function DocumentosPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
 
         <div className="bg-card border border-dashed border-border rounded-md p-10 text-center hover:border-primary transition-colors cursor-pointer">

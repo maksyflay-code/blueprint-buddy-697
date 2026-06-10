@@ -15,7 +15,7 @@ function fmtBRL(v: number) {
 function ClientesPage() {
   return (
     <AppLayout>
-      <div className="p-8 space-y-6">
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6">
         <PageHeader
           title="Clientes"
           subtitle={`${clientes.length} clientes cadastrados na base`}
@@ -26,7 +26,7 @@ function ClientesPage() {
           }
         />
 
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {clientes.map((c, i) => {
             const sb =
               c.status === "ativo"

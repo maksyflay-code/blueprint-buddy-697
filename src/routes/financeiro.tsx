@@ -19,7 +19,7 @@ function FinanceiroPage() {
 
   return (
     <AppLayout>
-      <div className="p-8 space-y-6">
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6">
         <PageHeader
           title="Financeiro"
           subtitle="Receita, faturamento e contas a receber"
@@ -30,7 +30,7 @@ function FinanceiroPage() {
           }
         />
 
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           <div className="bg-card border border-border rounded-md p-5 animate-in-up">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
@@ -112,7 +112,7 @@ function FinanceiroPage() {
               Recebíveis por Contrato
             </h3>
           </div>
-          <table className="w-full text-xs">
+          <div className="overflow-x-auto"><table className="w-full text-xs">
             <thead className="bg-accent/20">
               <tr className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                 <th className="px-6 py-3 text-left">Contrato</th>
@@ -141,7 +141,7 @@ function FinanceiroPage() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
         </div>
       </div>
     </AppLayout>

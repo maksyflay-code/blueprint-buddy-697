@@ -36,26 +36,26 @@ function Dashboard() {
 
   return (
     <AppLayout>
-      <div className="p-8 space-y-8">
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8">
         {/* Header row */}
-        <div className="flex items-end justify-between gap-4">
-          <div>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div className="min-w-0">
             <div className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-2">
               Operação / Painel de Controle
             </div>
-            <h1 className="text-2xl font-bold tracking-tight">Bom dia, Ricardo</h1>
-            <p className="text-sm text-muted-foreground mt-1">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Bom dia, Ricardo</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
               {kpis.devolucoesHoje} devoluções previstas hoje · {kpis.solicitacoesPendentes} solicitações aguardando.
             </p>
           </div>
-          <button className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm">
+          <button className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm shrink-0">
             <Plus className="size-4" />
             Nova Locação
           </button>
         </div>
 
         {/* KPI Grid */}
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {[
             { label: "Receita Mensal", value: fmtBRL(kpis.receitaMensal), delta: `+${kpis.receitaDelta}% vs mês anterior`, deltaColor: "text-success", delay: 50 },
             { label: "Taxa de Utilização", value: `${kpis.utilizacao}%`, bar: kpis.utilizacao, delay: 100 },
@@ -86,8 +86,8 @@ function Dashboard() {
         </div>
 
         {/* Charts row */}
-        <div className="grid grid-cols-3 gap-6">
-          <div className="col-span-2 bg-card border border-border rounded-md p-6 animate-in-up" style={{ animationDelay: "250ms" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+          <div className="lg:col-span-2 bg-card border border-border rounded-md p-4 sm:p-6 animate-in-up" style={{ animationDelay: "250ms" }}>
             <div className="flex items-start justify-between mb-6">
               <div>
                 <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Receita — 6 meses</div>
@@ -142,8 +142,8 @@ function Dashboard() {
         </div>
 
         {/* Fleet + Requests */}
-        <div className="grid grid-cols-3 gap-6">
-          <div className="col-span-2 space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+          <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
                 Status da Frota
@@ -152,7 +152,7 @@ function Dashboard() {
                 Ver Todos <ArrowUpRight className="size-3" />
               </a>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {equipamentos.slice(0, 4).map((e, i) => {
                 const s = statusToBadge[e.status];
                 return (
@@ -161,14 +161,14 @@ function Dashboard() {
                     className="bg-card border border-border rounded-md overflow-hidden flex animate-in-up hover:border-primary/40 transition-colors"
                     style={{ animationDelay: `${350 + i * 50}ms` }}
                   >
-                    <div className="w-32 bg-accent grid place-items-center border-r border-border shrink-0">
+                    <div className="w-24 sm:w-32 bg-accent grid place-items-center border-r border-border shrink-0">
                       <img
                         src={e.imagem}
                         alt={e.nome}
                         loading="lazy"
                         width={128}
                         height={128}
-                        className="object-contain max-h-32 p-2"
+                        className="object-contain max-h-24 sm:max-h-32 p-2"
                       />
                     </div>
                     <div className="p-4 flex-1 min-w-0">
@@ -325,17 +325,19 @@ function Dashboard() {
         </div>
 
         {/* Alert strip */}
-        <div className="bg-warning/10 border border-warning/30 rounded-md p-4 flex items-center gap-4 animate-in-up" style={{ animationDelay: "750ms" }}>
-          <AlertTriangle className="size-5 text-warning shrink-0" />
-          <div className="flex-1">
-            <div className="text-sm font-semibold">3 manutenções críticas requerem atenção</div>
-            <div className="text-xs text-muted-foreground">
-              Equipamentos com paradas não programadas afetando contratos vigentes.
+        <div className="bg-warning/10 border border-warning/30 rounded-md p-4 flex flex-col sm:flex-row sm:items-center gap-4 animate-in-up" style={{ animationDelay: "750ms" }}>
+          <div className="flex items-start sm:items-center gap-3 flex-1 min-w-0">
+            <AlertTriangle className="size-5 text-warning shrink-0 mt-0.5 sm:mt-0" />
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-semibold">3 manutenções críticas requerem atenção</div>
+              <div className="text-xs text-muted-foreground">
+                Equipamentos com paradas não programadas afetando contratos vigentes.
+              </div>
             </div>
           </div>
           <a
             href="/manutencao"
-            className="text-xs font-bold uppercase tracking-wider px-3 py-2 border border-warning/40 rounded hover:bg-warning/20 transition-colors"
+            className="text-xs font-bold uppercase tracking-wider px-3 py-2 border border-warning/40 rounded hover:bg-warning/20 transition-colors text-center shrink-0"
           >
             Ver Manutenções
           </a>
