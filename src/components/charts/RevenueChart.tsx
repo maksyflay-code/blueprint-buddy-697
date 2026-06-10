@@ -42,13 +42,13 @@ function CustomTooltip({ active, payload, label }: any) {
 }
 
 export function RevenueChart({ data }: { data: RevenuePoint[] }) {
-  const { ref, width, height } = useChartSize();
+  const { ref, width } = useChartSize();
   return (
     <div ref={ref} className="h-80 w-full">
-      {width > 0 && height > 0 && (
+      {width > 0 && (
         <AreaChart
           width={width}
-          height={height}
+          height={320}
           data={data}
           margin={{ top: 10, right: 8, left: -16, bottom: 0 }}
         >
