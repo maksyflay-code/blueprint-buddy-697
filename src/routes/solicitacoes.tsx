@@ -59,8 +59,8 @@ function SolicitacoesPage() {
                   className="bg-card border border-border rounded-md p-5 animate-in-up hover:border-primary/40 transition-colors"
                   style={{ animationDelay: `${i * 40}ms` }}
                 >
-                  <div className="flex items-start justify-between gap-4 mb-3">
-                    <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                       <span className="text-[10px] font-mono text-primary bg-primary/10 px-2 py-1 rounded">
                         #{r.numero}
                       </span>
