@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { AppLayout, StatusBadge } from "@/components/AppLayout";
 import { RevenueChart } from "@/components/charts/RevenueChart";
 import { FunnelChartCustom } from "@/components/charts/FunnelChart";
