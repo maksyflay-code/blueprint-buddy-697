@@ -16,7 +16,7 @@ import {
   HardHat,
   UserCog,
   ShoppingCart,
-} from "lucide-react";
+  Car,
 import { useEffect, useState, type ReactNode } from "react";
 
 const navComercial = [
