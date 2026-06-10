@@ -1,4 +1,5 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { PieChart, Pie, Cell, Tooltip } from "recharts";
+import { useChartSize } from "./useChartSize";
 
 export interface UtilSlice {
   name: string;
@@ -15,14 +16,18 @@ export function UtilizationDonut({
   centerLabel: string;
   centerValue: string;
 }) {
+  const { ref, width } = useChartSize();
+  const height = 192; // h-48
+  const size = Math.min(width || 0, height);
+
   return (
-    <div className="relative h-48 w-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
+    <div ref={ref} className="relative h-48 w-full flex items-center justify-center">
+      {width > 0 && (
+        <PieChart width={width} height={height}>
           <Pie
             data={data}
-            innerRadius="62%"
-            outerRadius="92%"
+            innerRadius={size * 0.31}
+            outerRadius={size * 0.46}
             paddingAngle={2}
             dataKey="value"
             stroke="#ffffff"
@@ -41,7 +46,7 @@ export function UtilizationDonut({
             }}
           />
         </PieChart>
-      </ResponsiveContainer>
+      )}
       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
         <div className="text-2xl font-bold tracking-tight">{centerValue}</div>
         <div className="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-0.5">
