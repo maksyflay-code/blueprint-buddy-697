@@ -5,8 +5,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
 } from "recharts";
+import { useChartSize } from "./useChartSize";
 
 export interface RevenuePoint {
   mes: string;
@@ -42,10 +42,16 @@ function CustomTooltip({ active, payload, label }: any) {
 }
 
 export function RevenueChart({ data }: { data: RevenuePoint[] }) {
+  const { ref, width } = useChartSize();
   return (
-    <div className="h-56 w-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data} margin={{ top: 10, right: 8, left: -16, bottom: 0 }}>
+    <div ref={ref} className="h-56 w-full">
+      {width > 0 && (
+        <AreaChart
+          width={width}
+          height={224}
+          data={data}
+          margin={{ top: 10, right: 8, left: -16, bottom: 0 }}
+        >
           <defs>
             <linearGradient id="gradLocacao" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="oklch(0.68 0.18 45)" stopOpacity={0.6} />
@@ -93,7 +99,7 @@ export function RevenueChart({ data }: { data: RevenuePoint[] }) {
             fill="url(#gradObras)"
           />
         </AreaChart>
-      </ResponsiveContainer>
+      )}
     </div>
   );
 }
