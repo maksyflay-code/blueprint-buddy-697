@@ -57,7 +57,7 @@ function ManutencaoPage() {
             return (
               <div
                 key={m.id}
-                className="bg-card border border-border rounded-md p-5 flex items-center gap-6 animate-in-up hover:border-primary/40 transition-colors"
+                className="bg-card border border-border rounded-md p-4 sm:p-5 flex flex-wrap items-center gap-4 sm:gap-6 animate-in-up hover:border-primary/40 transition-colors"
                 style={{ animationDelay: `${i * 40}ms` }}
               >
                 <div
@@ -73,8 +73,8 @@ function ManutencaoPage() {
                 >
                   <Icon className="size-5" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3 mb-1">
+                <div className="flex-1 min-w-[180px]">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-1 flex-wrap">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
                       {m.tipo}
                     </span>
