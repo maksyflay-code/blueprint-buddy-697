@@ -1,20 +1,34 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { AppLayout, StatusBadge } from "@/components/AppLayout";
 import {
-  equipamentos,
-  solicitacoes,
-  locacoes,
   kpis,
+  kpisExecutivo,
   receitaSerie,
-  utilizacaoPorCategoria,
+  obras,
+  licitacoes,
+  solicitacoes,
+  equipamentos,
+  pipelineFunil,
 } from "@/lib/erp-data";
-import { ArrowUpRight, Plus, Paperclip, TrendingUp, AlertTriangle } from "lucide-react";
+import {
+  ArrowUpRight,
+  Plus,
+  TrendingUp,
+  AlertTriangle,
+  Gavel,
+  HardHat,
+  Truck,
+  Banknote,
+  UserCog,
+  Building2,
+} from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Vetor ERP — Painel de Controle" },
-      { name: "description", content: "Painel operacional para locação de equipamentos de engenharia." },
+      { title: "Vetor ERP — Painel Executivo" },
+      { name: "description", content: "Visão consolidada de licitações, obras, locação e financeiro." },
     ],
   }),
   component: Dashboard,
@@ -23,76 +37,131 @@ export const Route = createFileRoute("/")({
 function fmtBRL(v: number) {
   return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 }
-
-const statusToBadge: Record<string, { variant: "success" | "warning" | "destructive" | "muted" | "primary"; label: string }> = {
-  alugado: { variant: "success", label: "Alugado" },
-  disponivel: { variant: "primary", label: "Disponível" },
-  manutencao: { variant: "warning", label: "Oficina" },
-  transito: { variant: "muted", label: "Em Trânsito" },
-};
+function fmtM(v: number) {
+  if (v >= 1_000_000) return `R$ ${(v / 1_000_000).toFixed(2).replace(".", ",")}M`;
+  if (v >= 1_000) return `R$ ${(v / 1_000).toFixed(0)}k`;
+  return `R$ ${v}`;
+}
 
 function Dashboard() {
   const maxReceita = Math.max(...receitaSerie.map((r) => r.valor));
+  const receitaTotal = kpisExecutivo.receitaLocacao + kpisExecutivo.receitaObras;
+  const obrasAtivas = obras.filter((o) => o.status === "execucao");
+  const licitacoesProximas = licitacoes
+    .filter((l) => ["monitorando", "preparando", "enviada"].includes(l.status))
+    .slice(0, 4);
+  const pendentes = solicitacoes.filter((s) => s.status === "pendente").slice(0, 3);
+  const frotaAlugada = equipamentos.filter((e) => e.status === "alugado").length;
+  const frotaManut = equipamentos.filter((e) => e.status === "manutencao").length;
 
   return (
     <AppLayout>
       <div className="p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8">
-        {/* Header row */}
+        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div className="min-w-0">
             <div className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-2">
-              Operação / Painel de Controle
+              Direção / Painel Executivo Consolidado
             </div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Bom dia, Ricardo</h1>
             <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-              {kpis.devolucoesHoje} devoluções previstas hoje · {kpis.solicitacoesPendentes} solicitações aguardando.
+              {kpisExecutivo.obrasAtivas} obras ativas · {kpisExecutivo.licitacoesAbertas} editais em pipeline · {kpis.solicitacoesPendentes} aprovações pendentes.
             </p>
           </div>
-          <button className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm shrink-0">
-            <Plus className="size-4" />
-            Nova Locação
-          </button>
+          <div className="flex gap-2 flex-wrap">
+            <button className="inline-flex items-center gap-2 border border-border bg-card px-3 py-2 rounded-md text-xs font-medium hover:bg-accent">
+              <Gavel className="size-3.5" /> Novo Edital
+            </button>
+            <button className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 shadow-sm">
+              <Plus className="size-4" /> Nova Locação
+            </button>
+          </div>
         </div>
 
-        {/* KPI Grid */}
+        {/* Top KPIs - Visão Diretor */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {[
-            { label: "Receita Mensal", value: fmtBRL(kpis.receitaMensal), delta: `+${kpis.receitaDelta}% vs mês anterior`, deltaColor: "text-success", delay: 50 },
-            { label: "Taxa de Utilização", value: `${kpis.utilizacao}%`, bar: kpis.utilizacao, delay: 100 },
-            { label: "Locações Ativas", value: `${kpis.locacoesAtivas}`, suffix: "máquinas", footer: `${kpis.devolucoesHoje} devoluções hoje`, delay: 150 },
-            { label: "Em Manutenção", value: `0${kpis.emManutencao}`, valueColor: "text-destructive", footer: `${kpis.criticos} em caráter crítico`, footerColor: "text-warning-foreground", delay: 200 },
-          ].map((k) => (
+            {
+              label: "Receita Consolidada",
+              value: fmtM(receitaTotal),
+              sub: `Locação ${fmtM(kpisExecutivo.receitaLocacao)} + Obras ${fmtM(kpisExecutivo.receitaObras)}`,
+              icon: TrendingUp,
+              color: "text-success",
+            },
+            {
+              label: "Carteira de Obras",
+              value: fmtM(kpisExecutivo.obrasValor),
+              sub: `${kpisExecutivo.obrasAtivas} obras em execução`,
+              icon: HardHat,
+            },
+            {
+              label: "Pipeline Licitações",
+              value: fmtM(kpisExecutivo.licitacoesValor),
+              sub: `${kpisExecutivo.licitacoesAbertas} editais · taxa ${kpisExecutivo.taxaSucesso}%`,
+              icon: Gavel,
+            },
+            {
+              label: "Margem Bruta",
+              value: `${kpisExecutivo.margemBruta}%`,
+              sub: `A receber ${fmtM(kpisExecutivo.contasReceber)}`,
+              icon: Banknote,
+            },
+          ].map((k, i) => (
             <div
               key={k.label}
-              className="bg-card p-5 border border-border rounded-md animate-in-up"
-              style={{ animationDelay: `${k.delay}ms` }}
+              className="bg-card p-4 sm:p-5 border border-border rounded-md animate-in-up"
+              style={{ animationDelay: `${50 + i * 50}ms` }}
             >
-              <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter mb-2">
-                {k.label}
-              </div>
-              <div className={`text-2xl font-bold tracking-tight ${k.valueColor ?? ""}`}>
-                {k.value}{" "}
-                {k.suffix && <span className="text-sm text-muted-foreground font-normal">{k.suffix}</span>}
-              </div>
-              {k.delta && <div className={`text-[10px] font-medium mt-2 ${k.deltaColor}`}>{k.delta}</div>}
-              {k.bar !== undefined && (
-                <div className="w-full bg-accent h-1 mt-3 overflow-hidden rounded-full">
-                  <div className="bg-primary h-full" style={{ width: `${k.bar}%` }} />
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">
+                  {k.label}
                 </div>
-              )}
-              {k.footer && <div className={`text-[10px] mt-2 font-medium ${k.footerColor ?? "text-muted-foreground"}`}>{k.footer}</div>}
+                <k.icon className="size-3.5 text-muted-foreground" />
+              </div>
+              <div className={`text-xl sm:text-2xl font-bold tracking-tight ${k.color ?? ""}`}>{k.value}</div>
+              <div className="text-[10px] text-muted-foreground mt-1.5 leading-tight">{k.sub}</div>
             </div>
           ))}
         </div>
 
-        {/* Charts row */}
+        {/* Secondary KPIs - Operacionais */}
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+          {[
+            { label: "Frota Alugada", value: frotaAlugada, total: equipamentos.length, to: "/equipamentos", icon: Truck },
+            { label: "Em Manutenção", value: frotaManut, color: "text-warning-foreground", to: "/manutencao" },
+            { label: "Locações Ativas", value: kpis.locacoesAtivas, to: "/locacoes" },
+            { label: "Colaboradores", value: kpisExecutivo.colaboradores, to: "/equipe", icon: UserCog },
+            { label: "ASO Vencendo", value: kpisExecutivo.asoVencendo, color: "text-destructive", to: "/equipe" },
+          ].map((k) => (
+            <Link
+              key={k.label}
+              to={k.to}
+              className="bg-card border border-border rounded-md p-3 hover:border-primary/40 transition-colors"
+            >
+              <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">
+                {k.label}
+              </div>
+              <div className={`text-lg font-bold tracking-tight mt-1 ${k.color ?? ""}`}>
+                {k.value}
+                {k.total && <span className="text-xs text-muted-foreground font-normal">/{k.total}</span>}
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Receita + Funil */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
-          <div className="lg:col-span-2 bg-card border border-border rounded-md p-4 sm:p-6 animate-in-up" style={{ animationDelay: "250ms" }}>
+          <div
+            className="lg:col-span-2 bg-card border border-border rounded-md p-4 sm:p-6 animate-in-up"
+            style={{ animationDelay: "250ms" }}
+          >
             <div className="flex items-start justify-between mb-6">
               <div>
-                <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Receita — 6 meses</div>
+                <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                  Receita Consolidada — 6 meses
+                </div>
                 <div className="flex items-baseline gap-2 mt-2">
-                  <span className="text-2xl font-bold tracking-tight">{fmtBRL(kpis.receitaMensal)}</span>
+                  <span className="text-2xl font-bold tracking-tight">{fmtM(receitaTotal)}</span>
                   <span className="text-xs text-success font-medium flex items-center gap-1">
                     <TrendingUp className="size-3" /> +12.4%
                   </span>
@@ -118,209 +187,158 @@ function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-card border border-border rounded-md p-6 animate-in-up" style={{ animationDelay: "300ms" }}>
-            <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-4">
-              Utilização por Categoria
+          <div
+            className="bg-card border border-border rounded-md p-4 sm:p-6 animate-in-up"
+            style={{ animationDelay: "300ms" }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                Funil de Licitações
+              </div>
+              <Link to="/licitacoes" className="text-[10px] text-primary font-bold uppercase flex items-center gap-1">
+                Ver <ArrowUpRight className="size-3" />
+              </Link>
             </div>
-            <div className="space-y-4">
-              {utilizacaoPorCategoria.map((c) => (
-                <div key={c.categoria}>
-                  <div className="flex justify-between items-baseline text-xs mb-1.5">
-                    <span className="font-medium truncate">{c.categoria}</span>
-                    <span className="font-mono text-muted-foreground">{c.percentual}%</span>
-                  </div>
-                  <div className="h-1 bg-accent rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full ${c.percentual >= 85 ? "bg-success" : c.percentual >= 70 ? "bg-primary" : "bg-warning"}`}
-                      style={{ width: `${c.percentual}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Fleet + Requests */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
-          <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
-                Status da Frota
-              </h2>
-              <a className="text-xs font-medium text-primary hover:underline flex items-center gap-1" href="/equipamentos">
-                Ver Todos <ArrowUpRight className="size-3" />
-              </a>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              {equipamentos.slice(0, 4).map((e, i) => {
-                const s = statusToBadge[e.status];
+            <div className="space-y-2.5">
+              {pipelineFunil.map((f) => {
+                const max = Math.max(...pipelineFunil.map((x) => x.valor));
                 return (
-                  <div
-                    key={e.id}
-                    className="bg-card border border-border rounded-md overflow-hidden flex animate-in-up hover:border-primary/40 transition-colors"
-                    style={{ animationDelay: `${350 + i * 50}ms` }}
-                  >
-                    <div className="w-24 sm:w-32 bg-accent grid place-items-center border-r border-border shrink-0">
-                      <img
-                        src={e.imagem}
-                        alt={e.nome}
-                        loading="lazy"
-                        width={128}
-                        height={128}
-                        className="object-contain max-h-24 sm:max-h-32 p-2"
-                      />
+                  <div key={f.etapa}>
+                    <div className="flex justify-between items-baseline text-[11px] mb-1">
+                      <span className="font-medium truncate">{f.etapa}</span>
+                      <span className="font-mono text-muted-foreground text-[10px]">{f.quantidade}</span>
                     </div>
-                    <div className="p-4 flex-1 min-w-0">
-                      <div className="flex justify-between items-start gap-2">
-                        <div className="min-w-0">
-                          <div className="text-xs font-bold truncate">{e.nome}</div>
-                          <div className="text-[10px] font-mono text-muted-foreground uppercase mt-0.5">
-                            #{e.codigo}
-                          </div>
-                        </div>
-                        <StatusBadge variant={s.variant}>{s.label}</StatusBadge>
-                      </div>
-                      <div className="mt-4 grid grid-cols-2 gap-2 text-[10px]">
-                        <div>
-                          <span className="text-muted-foreground block uppercase tracking-wider">
-                            {e.cliente ? "Cliente" : "Local"}
-                          </span>
-                          <span className="font-medium truncate block">{e.cliente ?? e.local}</span>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground block uppercase tracking-wider">
-                            Próx. Manut.
-                          </span>
-                          <span className="font-medium">{e.proxManutencao}</span>
-                        </div>
-                      </div>
+                    <div className="h-1.5 bg-accent rounded-full overflow-hidden">
+                      <div className="h-full bg-primary" style={{ width: `${(f.valor / max) * 100}%` }} />
                     </div>
+                    <div className="text-[9px] font-mono text-muted-foreground mt-0.5">{fmtM(f.valor)}</div>
                   </div>
                 );
               })}
             </div>
           </div>
-
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
-                Solicitações Internas
-              </h2>
-              <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 font-bold rounded">
-                {kpis.solicitacoesPendentes} NOVAS
-              </span>
-            </div>
-
-            {solicitacoes.slice(0, 2).map((r, i) => (
-              <div
-                key={r.id}
-                className="bg-card p-4 border border-border rounded-md space-y-3 animate-in-up shadow-sm"
-                style={{ animationDelay: `${550 + i * 50}ms` }}
-              >
-                <div className="flex justify-between items-center">
-                  <span className="text-[10px] font-mono text-primary bg-primary/5 px-1.5 py-0.5 rounded">
-                    #{r.numero}
-                  </span>
-                  <span className="text-[10px] text-muted-foreground font-medium">{r.tempo}</span>
-                </div>
-                <div className="text-[10px] font-bold uppercase tracking-wider text-primary">
-                  {r.tipo}
-                </div>
-                <div className="text-xs font-semibold leading-snug">{r.titulo}</div>
-                <div className="text-[10px] text-muted-foreground">
-                  Por <strong className="text-foreground">{r.solicitante}</strong> · {r.setor}
-                </div>
-                {r.anexos.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {r.anexos.map((a) => (
-                      <div
-                        key={a.nome}
-                        className="flex items-center gap-1 bg-accent px-2 py-1 rounded text-[9px] font-medium border border-border/50"
-                      >
-                        <Paperclip className="size-2.5" />
-                        {a.nome}
-                      </div>
-                    ))}
-                  </div>
-                )}
-                {r.status === "pendente" && (
-                  <div className="flex gap-2 pt-1">
-                    <button className="flex-1 py-1.5 bg-primary text-primary-foreground text-[10px] font-bold rounded uppercase tracking-wider hover:bg-primary/90 transition-colors">
-                      Aprovar
-                    </button>
-                    <button className="px-3 py-1.5 border border-border text-[10px] font-bold rounded uppercase text-muted-foreground hover:bg-accent transition-colors">
-                      Negar
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
-
-            <a
-              href="/solicitacoes"
-              className="block text-center text-xs text-muted-foreground hover:text-foreground py-2 border border-dashed border-border rounded-md transition-colors"
-            >
-              Ver todas as solicitações →
-            </a>
-          </div>
         </div>
 
-        {/* Active Rentals Table */}
-        <div className="bg-card border border-border rounded-md overflow-hidden animate-in-up" style={{ animationDelay: "700ms" }}>
-          <div className="p-4 border-b border-border bg-accent/30 flex items-center justify-between">
-            <div>
-              <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                Últimas Locações Registradas
+        {/* Obras + Aprovações */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+          <div className="lg:col-span-2 space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
+                Obras em Execução
               </h2>
+              <Link to="/obras" className="text-xs font-medium text-primary hover:underline flex items-center gap-1">
+                Ver Todas <ArrowUpRight className="size-3" />
+              </Link>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="size-2 bg-success rounded-full pulse-dot" />
-              <span className="text-[10px] font-mono text-muted-foreground uppercase">Tempo Real</span>
+            <div className="space-y-3">
+              {obrasAtivas.slice(0, 4).map((o, i) => (
+                <div
+                  key={o.id}
+                  className="bg-card border border-border rounded-md p-4 animate-in-up hover:border-primary/40 transition-colors"
+                  style={{ animationDelay: `${350 + i * 50}ms` }}
+                >
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-mono text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+                          {o.codigo}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground uppercase">{o.cidade}, {o.uf}</span>
+                      </div>
+                      <div className="text-sm font-semibold mt-1 truncate">{o.nome}</div>
+                      <div className="text-[11px] text-muted-foreground flex items-center gap-1 mt-0.5">
+                        <Building2 className="size-3" /> {o.contratante}
+                      </div>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="text-[9px] uppercase tracking-wider text-muted-foreground">Contrato</div>
+                      <div className="font-mono font-bold text-sm">{fmtM(o.valorContrato)}</div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <div className="flex justify-between text-[10px] mb-1">
+                        <span className="text-muted-foreground uppercase tracking-wider">Físico</span>
+                        <span className="font-mono font-bold">{o.fisico}%</span>
+                      </div>
+                      <div className="h-1 bg-accent rounded-full overflow-hidden">
+                        <div className="h-full bg-success" style={{ width: `${o.fisico}%` }} />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between text-[10px] mb-1">
+                        <span className="text-muted-foreground uppercase tracking-wider">Financeiro</span>
+                        <span className="font-mono font-bold">{o.financeiro}%</span>
+                      </div>
+                      <div className="h-1 bg-accent rounded-full overflow-hidden">
+                        <div className="h-full bg-primary" style={{ width: `${o.financeiro}%` }} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead className="bg-accent/20">
-                <tr className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-                  <th className="px-6 py-3">Contrato</th>
-                  <th className="px-6 py-3">Equipamento</th>
-                  <th className="px-6 py-3">Cliente / Obra</th>
-                  <th className="px-6 py-3">Período</th>
-                  <th className="px-6 py-3 text-right">Valor Total</th>
-                  <th className="px-6 py-3">Status</th>
-                </tr>
-              </thead>
-              <tbody className="text-xs">
-                {locacoes.slice(0, 5).map((l) => {
-                  const badge =
-                    l.status === "vigente"
-                      ? { variant: "success" as const, label: "Vigente" }
-                      : l.status === "pendente_assinatura"
-                      ? { variant: "warning" as const, label: "Pend. Assinatura" }
-                      : l.status === "atrasado"
-                      ? { variant: "destructive" as const, label: "Atrasado" }
-                      : { variant: "muted" as const, label: "Encerrado" };
-                  return (
-                    <tr key={l.contrato} className="border-t border-border/60 hover:bg-accent/20 transition-colors">
-                      <td className="px-6 py-4 font-mono font-medium">#{l.contrato}</td>
-                      <td className="px-6 py-4">{l.equipamento}</td>
-                      <td className="px-6 py-4">
-                        <div className="font-medium">{l.cliente}</div>
-                        <div className="text-[10px] text-muted-foreground uppercase">{l.obra}</div>
-                      </td>
-                      <td className="px-6 py-4 text-muted-foreground">
-                        {l.inicio} → {l.fim}
-                      </td>
-                      <td className="px-6 py-4 text-right font-medium">{fmtBRL(l.valor)}</td>
-                      <td className="px-6 py-4">
-                        <StatusBadge variant={badge.variant}>{badge.label}</StatusBadge>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+
+          {/* Próximas licitações + aprovações */}
+          <div className="space-y-6">
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
+                  Próximas Aberturas
+                </h2>
+                <Link to="/licitacoes" className="text-[10px] text-primary font-bold uppercase">
+                  Ver
+                </Link>
+              </div>
+              <div className="space-y-2">
+                {licitacoesProximas.map((l) => (
+                  <div key={l.id} className="bg-card border border-border rounded-md p-3 hover:border-primary/40 transition-colors">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <span className="text-[10px] font-mono font-bold text-primary truncate">{l.numero}</span>
+                      <span className="text-[10px] font-mono text-muted-foreground shrink-0">{l.uf}</span>
+                    </div>
+                    <div className="text-xs font-medium leading-tight line-clamp-2">{l.objeto}</div>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="text-[10px] text-muted-foreground">{l.prazoEntrega}</span>
+                      <span className="text-[10px] font-mono font-bold">{fmtM(l.valorEstimado)}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
+                  Aprovações Pendentes
+                </h2>
+                <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 font-bold rounded">
+                  {pendentes.length}
+                </span>
+              </div>
+              <div className="space-y-2">
+                {pendentes.map((r) => (
+                  <div key={r.id} className="bg-card p-3 border border-border rounded-md space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono text-primary">#{r.numero}</span>
+                      <StatusBadge variant={r.prioridade === "alta" ? "destructive" : "muted"}>
+                        {r.prioridade}
+                      </StatusBadge>
+                    </div>
+                    <div className="text-xs font-medium leading-snug line-clamp-2">{r.titulo}</div>
+                    <div className="flex gap-1.5">
+                      <button className="flex-1 py-1 bg-primary text-primary-foreground text-[10px] font-bold rounded uppercase hover:bg-primary/90">
+                        Aprovar
+                      </button>
+                      <button className="px-2 py-1 border border-border text-[10px] font-bold rounded uppercase text-muted-foreground hover:bg-accent">
+                        Negar
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -329,18 +347,18 @@ function Dashboard() {
           <div className="flex items-start sm:items-center gap-3 flex-1 min-w-0">
             <AlertTriangle className="size-5 text-warning shrink-0 mt-0.5 sm:mt-0" />
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-semibold">3 manutenções críticas requerem atenção</div>
+              <div className="text-sm font-semibold">1 obra paralisada e 3 manutenções críticas</div>
               <div className="text-xs text-muted-foreground">
-                Equipamentos com paradas não programadas afetando contratos vigentes.
+                Asfaltamento Av. Brasil aguarda liberação ambiental · revisar plano de ação.
               </div>
             </div>
           </div>
-          <a
-            href="/manutencao"
+          <Link
+            to="/obras"
             className="text-xs font-bold uppercase tracking-wider px-3 py-2 border border-warning/40 rounded hover:bg-warning/20 transition-colors text-center shrink-0"
           >
-            Ver Manutenções
-          </a>
+            Ver Obras
+          </Link>
         </div>
       </div>
     </AppLayout>
