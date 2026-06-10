@@ -325,17 +325,19 @@ function Dashboard() {
         </div>
 
         {/* Alert strip */}
-        <div className="bg-warning/10 border border-warning/30 rounded-md p-4 flex items-center gap-4 animate-in-up" style={{ animationDelay: "750ms" }}>
-          <AlertTriangle className="size-5 text-warning shrink-0" />
-          <div className="flex-1">
-            <div className="text-sm font-semibold">3 manutenções críticas requerem atenção</div>
-            <div className="text-xs text-muted-foreground">
-              Equipamentos com paradas não programadas afetando contratos vigentes.
+        <div className="bg-warning/10 border border-warning/30 rounded-md p-4 flex flex-col sm:flex-row sm:items-center gap-4 animate-in-up" style={{ animationDelay: "750ms" }}>
+          <div className="flex items-start sm:items-center gap-3 flex-1 min-w-0">
+            <AlertTriangle className="size-5 text-warning shrink-0 mt-0.5 sm:mt-0" />
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-semibold">3 manutenções críticas requerem atenção</div>
+              <div className="text-xs text-muted-foreground">
+                Equipamentos com paradas não programadas afetando contratos vigentes.
+              </div>
             </div>
           </div>
           <a
             href="/manutencao"
-            className="text-xs font-bold uppercase tracking-wider px-3 py-2 border border-warning/40 rounded hover:bg-warning/20 transition-colors"
+            className="text-xs font-bold uppercase tracking-wider px-3 py-2 border border-warning/40 rounded hover:bg-warning/20 transition-colors text-center shrink-0"
           >
             Ver Manutenções
           </a>
