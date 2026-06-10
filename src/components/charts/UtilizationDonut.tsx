@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 export interface UtilSlice {
@@ -16,10 +15,6 @@ export function UtilizationDonut({
   centerLabel: string;
   centerValue: string;
 }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return <div className="h-48 w-full bg-accent/20 animate-pulse rounded" />;
-
   return (
     <div className="relative h-48 w-full">
       <ResponsiveContainer width="100%" height="100%">
