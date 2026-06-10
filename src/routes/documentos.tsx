@@ -102,6 +102,7 @@ function DocumentosPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
 
         <div className="bg-card border border-dashed border-border rounded-md p-10 text-center hover:border-primary transition-colors cursor-pointer">
