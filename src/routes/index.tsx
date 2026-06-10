@@ -173,13 +173,13 @@ function Dashboard() {
           ))}
         </div>
 
-        {/* Receita + Funil */}
+        {/* Receita + Funil + Utilização */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
           <div
             className="lg:col-span-2 bg-card border border-border rounded-md p-4 sm:p-6 animate-in-up"
             style={{ animationDelay: "250ms" }}
           >
-            <div className="flex items-start justify-between mb-6">
+            <div className="flex items-start justify-between mb-4 flex-wrap gap-3">
               <div>
                 <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                   Receita Consolidada — 6 meses
@@ -191,24 +191,22 @@ function Dashboard() {
                   </span>
                 </div>
               </div>
-              <div className="flex gap-1 text-[10px] font-mono">
-                <span className="px-2 py-1 bg-accent rounded uppercase">6M</span>
-                <span className="px-2 py-1 text-muted-foreground uppercase">1A</span>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-1.5 text-[10px] font-mono uppercase">
+                  <span className="size-2 rounded-sm bg-primary" />
+                  <span className="text-muted-foreground">Locação</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-[10px] font-mono uppercase">
+                  <span className="size-2 rounded-sm bg-success" />
+                  <span className="text-muted-foreground">Obras</span>
+                </div>
+                <div className="flex gap-1 text-[10px] font-mono">
+                  <span className="px-2 py-1 bg-accent rounded uppercase">6M</span>
+                  <span className="px-2 py-1 text-muted-foreground uppercase">1A</span>
+                </div>
               </div>
             </div>
-            <div className="flex items-end gap-3 h-40">
-              {receitaSerie.map((r) => (
-                <div key={r.mes} className="flex-1 flex flex-col items-center gap-2">
-                  <div className="w-full bg-accent/40 rounded-sm relative flex-1 flex items-end">
-                    <div
-                      className="w-full bg-gradient-to-t from-primary to-primary/70 rounded-sm transition-all"
-                      style={{ height: `${(r.valor / maxReceita) * 100}%` }}
-                    />
-                  </div>
-                  <div className="text-[10px] font-mono text-muted-foreground uppercase">{r.mes}</div>
-                </div>
-              ))}
-            </div>
+            <RevenueChart data={receitaData} />
           </div>
 
           <div
@@ -216,32 +214,49 @@ function Dashboard() {
             style={{ animationDelay: "300ms" }}
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                Funil de Licitações
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                  Utilização da Frota
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">{equipamentos.length} máquinas no parque</div>
               </div>
-              <Link to="/licitacoes" className="text-[10px] text-primary font-bold uppercase flex items-center gap-1">
+              <Link to="/equipamentos" className="text-[10px] text-primary font-bold uppercase flex items-center gap-1">
                 Ver <ArrowUpRight className="size-3" />
               </Link>
             </div>
-            <div className="space-y-2.5">
-              {pipelineFunil.map((f) => {
-                const max = Math.max(...pipelineFunil.map((x) => x.valor));
-                return (
-                  <div key={f.etapa}>
-                    <div className="flex justify-between items-baseline text-[11px] mb-1">
-                      <span className="font-medium truncate">{f.etapa}</span>
-                      <span className="font-mono text-muted-foreground text-[10px]">{f.quantidade}</span>
-                    </div>
-                    <div className="h-1.5 bg-accent rounded-full overflow-hidden">
-                      <div className="h-full bg-primary" style={{ width: `${(f.valor / max) * 100}%` }} />
-                    </div>
-                    <div className="text-[9px] font-mono text-muted-foreground mt-0.5">{fmtM(f.valor)}</div>
-                  </div>
-                );
-              })}
+            <UtilizationDonut data={utilData} centerLabel="Média" centerValue={`${utilMedia}%`} />
+            <div className="grid grid-cols-2 gap-1.5 mt-3">
+              {utilData.slice(0, 4).map((u) => (
+                <div key={u.name} className="flex items-center gap-1.5 text-[10px]">
+                  <span className="size-2 rounded-sm shrink-0" style={{ background: u.color }} />
+                  <span className="truncate text-muted-foreground">{u.name}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
+
+        {/* Funil de Licitações - linha dedicada */}
+        <div
+          className="bg-card border border-border rounded-md p-4 sm:p-6 animate-in-up"
+          style={{ animationDelay: "350ms" }}
+        >
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                Funil de Licitações
+              </div>
+              <div className="text-xs text-muted-foreground mt-1">
+                {kpisExecutivo.licitacoesAbertas} editais ativos · taxa de sucesso {kpisExecutivo.taxaSucesso}%
+              </div>
+            </div>
+            <Link to="/licitacoes" className="text-xs text-primary font-medium flex items-center gap-1 hover:underline">
+              Pipeline completo <ArrowUpRight className="size-3" />
+            </Link>
+          </div>
+          <FunnelChartCustom data={pipelineFunil} />
+        </div>
+
 
         {/* Obras + Aprovações */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
