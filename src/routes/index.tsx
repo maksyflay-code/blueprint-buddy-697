@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { AppLayout, StatusBadge } from "@/components/AppLayout";
 import { RevenueChart } from "@/components/charts/RevenueChart";
 import { FunnelChartCustom } from "@/components/charts/FunnelChart";
@@ -47,8 +48,15 @@ function fmtM(v: number) {
 }
 
 function Dashboard() {
+  const [range, setRange] = useState<"6M" | "1A">("1A");
   const receitaTotal = kpisExecutivo.receitaLocacao + kpisExecutivo.receitaObras;
-  const receitaData = [
+  const receitaData12 = [
+    { mes: "Jan", locacao: 162, obras: 1180 },
+    { mes: "Fev", locacao: 175, obras: 1240 },
+    { mes: "Mar", locacao: 188, obras: 1320 },
+    { mes: "Abr", locacao: 192, obras: 1410 },
+    { mes: "Mai", locacao: 205, obras: 1485 },
+    { mes: "Jun", locacao: 210, obras: 1530 },
     { mes: "Jul", locacao: 198, obras: 1420 },
     { mes: "Ago", locacao: 215, obras: 1580 },
     { mes: "Set", locacao: 240, obras: 1720 },
@@ -56,6 +64,7 @@ function Dashboard() {
     { mes: "Nov", locacao: 253, obras: 1690 },
     { mes: "Dez", locacao: 284, obras: 1840 },
   ];
+  const receitaData = range === "1A" ? receitaData12 : receitaData12.slice(-6);
   const utilData = utilizacaoPorCategoria.map((c, i) => ({
     name: c.categoria,
     value: c.total,
@@ -182,7 +191,7 @@ function Dashboard() {
             <div className="flex items-start justify-between mb-4 flex-wrap gap-3">
               <div>
                 <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                  Receita Consolidada — 6 meses
+                  Receita Consolidada — {range === "1A" ? "12 meses" : "6 meses"}
                 </div>
                 <div className="flex items-baseline gap-2 mt-2">
                   <span className="text-2xl font-bold tracking-tight">{fmtM(receitaTotal)}</span>
@@ -201,8 +210,24 @@ function Dashboard() {
                   <span className="text-muted-foreground">Obras</span>
                 </div>
                 <div className="flex gap-1 text-[10px] font-mono">
-                  <span className="px-2 py-1 bg-accent rounded uppercase">6M</span>
-                  <span className="px-2 py-1 text-muted-foreground uppercase">1A</span>
+                  <button
+                    type="button"
+                    onClick={() => setRange("6M")}
+                    className={`px-2 py-1 rounded uppercase transition-colors ${
+                      range === "6M" ? "bg-accent text-foreground" : "text-muted-foreground hover:bg-accent/50"
+                    }`}
+                  >
+                    6M
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setRange("1A")}
+                    className={`px-2 py-1 rounded uppercase transition-colors ${
+                      range === "1A" ? "bg-accent text-foreground" : "text-muted-foreground hover:bg-accent/50"
+                    }`}
+                  >
+                    1A
+                  </button>
                 </div>
               </div>
             </div>
