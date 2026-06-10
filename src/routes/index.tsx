@@ -48,8 +48,15 @@ function fmtM(v: number) {
 }
 
 function Dashboard() {
+  const [range, setRange] = useState<"6M" | "1A">("1A");
   const receitaTotal = kpisExecutivo.receitaLocacao + kpisExecutivo.receitaObras;
-  const receitaData = [
+  const receitaData12 = [
+    { mes: "Jan", locacao: 162, obras: 1180 },
+    { mes: "Fev", locacao: 175, obras: 1240 },
+    { mes: "Mar", locacao: 188, obras: 1320 },
+    { mes: "Abr", locacao: 192, obras: 1410 },
+    { mes: "Mai", locacao: 205, obras: 1485 },
+    { mes: "Jun", locacao: 210, obras: 1530 },
     { mes: "Jul", locacao: 198, obras: 1420 },
     { mes: "Ago", locacao: 215, obras: 1580 },
     { mes: "Set", locacao: 240, obras: 1720 },
@@ -57,6 +64,7 @@ function Dashboard() {
     { mes: "Nov", locacao: 253, obras: 1690 },
     { mes: "Dez", locacao: 284, obras: 1840 },
   ];
+  const receitaData = range === "1A" ? receitaData12 : receitaData12.slice(-6);
   const utilData = utilizacaoPorCategoria.map((c, i) => ({
     name: c.categoria,
     value: c.total,
