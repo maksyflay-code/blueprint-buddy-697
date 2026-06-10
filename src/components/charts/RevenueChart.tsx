@@ -42,10 +42,6 @@ function CustomTooltip({ active, payload, label }: any) {
 }
 
 export function RevenueChart({ data }: { data: RevenuePoint[] }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return <div className="h-56 w-full bg-accent/20 animate-pulse rounded" />;
-
   return (
     <div className="h-56 w-full">
       <ResponsiveContainer width="100%" height="100%">
