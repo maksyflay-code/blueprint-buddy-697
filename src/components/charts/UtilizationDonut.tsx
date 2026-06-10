@@ -30,7 +30,7 @@ export function UtilizationDonut({
             outerRadius="92%"
             paddingAngle={2}
             dataKey="value"
-            stroke="var(--card)"
+            stroke="#ffffff"
             strokeWidth={2}
           >
             {data.map((d) => (
