@@ -86,8 +86,8 @@ function Dashboard() {
         </div>
 
         {/* Charts row */}
-        <div className="grid grid-cols-3 gap-6">
-          <div className="col-span-2 bg-card border border-border rounded-md p-6 animate-in-up" style={{ animationDelay: "250ms" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+          <div className="lg:col-span-2 bg-card border border-border rounded-md p-4 sm:p-6 animate-in-up" style={{ animationDelay: "250ms" }}>
             <div className="flex items-start justify-between mb-6">
               <div>
                 <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Receita — 6 meses</div>
