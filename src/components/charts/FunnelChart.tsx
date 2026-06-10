@@ -42,8 +42,8 @@ export function FunnelChartCustom({ data }: { data: FunnelStage[] }) {
                 style={{
                   width: mounted ? `${widthPct}%` : "0%",
                   background: `linear-gradient(90deg,
-                    hsl(var(--primary) / ${0.85 * intensity}) 0%,
-                    hsl(var(--primary) / ${0.55 * intensity}) 100%)`,
+                    color-mix(in oklab, var(--primary) ${85 * intensity}%, transparent) 0%,
+                    color-mix(in oklab, var(--primary) ${55 * intensity}%, transparent) 100%)`,
                   transitionDelay: `${i * 80}ms`,
                 }}
               >

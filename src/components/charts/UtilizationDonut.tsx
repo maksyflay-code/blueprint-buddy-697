@@ -30,7 +30,7 @@ export function UtilizationDonut({
             outerRadius="92%"
             paddingAngle={2}
             dataKey="value"
-            stroke="hsl(var(--card))"
+            stroke="var(--card)"
             strokeWidth={2}
           >
             {data.map((d) => (
@@ -39,8 +39,8 @@ export function UtilizationDonut({
           </Pie>
           <Tooltip
             contentStyle={{
-              background: "hsl(var(--card))",
-              border: "1px solid hsl(var(--border))",
+              background: "var(--card)",
+              border: "1px solid var(--border)",
               borderRadius: 6,
               fontSize: 11,
             }}

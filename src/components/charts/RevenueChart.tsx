@@ -53,37 +53,40 @@ export function RevenueChart({ data }: { data: RevenuePoint[] }) {
         <AreaChart data={data} margin={{ top: 10, right: 8, left: -16, bottom: 0 }}>
           <defs>
             <linearGradient id="gradLocacao" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="hsl(var(--chart-primary, 199 89% 60%))" stopOpacity={0.55} />
-              <stop offset="100%" stopColor="hsl(var(--chart-primary, 199 89% 60%))" stopOpacity={0.02} />
+              <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.6} />
+              <stop offset="100%" stopColor="var(--primary)" stopOpacity={0.02} />
             </linearGradient>
             <linearGradient id="gradObras" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="hsl(var(--chart-accent, 142 71% 55%))" stopOpacity={0.55} />
-              <stop offset="100%" stopColor="hsl(var(--chart-accent, 142 71% 55%))" stopOpacity={0.02} />
+              <stop offset="0%" stopColor="var(--success)" stopOpacity={0.55} />
+              <stop offset="100%" stopColor="var(--success)" stopOpacity={0.02} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="2 4" stroke="hsl(var(--border))" vertical={false} opacity={0.5} />
+          <CartesianGrid strokeDasharray="2 4" stroke="var(--border)" vertical={false} opacity={0.6} />
           <XAxis
             dataKey="mes"
-            stroke="hsl(var(--muted-foreground))"
+            stroke="var(--muted-foreground)"
             fontSize={10}
             tickLine={false}
             axisLine={false}
             style={{ fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.05em" }}
           />
           <YAxis
-            stroke="hsl(var(--muted-foreground))"
+            stroke="var(--muted-foreground)"
             fontSize={10}
             tickLine={false}
             axisLine={false}
             tickFormatter={(v) => `${v}k`}
             style={{ fontFamily: "var(--font-mono)" }}
           />
-          <Tooltip content={<CustomTooltip />} cursor={{ stroke: "hsl(var(--primary))", strokeWidth: 1, strokeDasharray: "3 3" }} />
+          <Tooltip
+            content={<CustomTooltip />}
+            cursor={{ stroke: "var(--primary)", strokeWidth: 1, strokeDasharray: "3 3" }}
+          />
           <Area
             type="monotone"
             dataKey="locacao"
             stackId="1"
-            stroke="hsl(var(--chart-primary, 199 89% 60%))"
+            stroke="var(--primary)"
             strokeWidth={2}
             fill="url(#gradLocacao)"
           />
@@ -91,7 +94,7 @@ export function RevenueChart({ data }: { data: RevenuePoint[] }) {
             type="monotone"
             dataKey="obras"
             stackId="1"
-            stroke="hsl(var(--chart-accent, 142 71% 55%))"
+            stroke="var(--success)"
             strokeWidth={2}
             fill="url(#gradObras)"
           />
