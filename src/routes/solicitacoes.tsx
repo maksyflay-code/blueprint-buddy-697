@@ -33,7 +33,7 @@ function SolicitacoesPage() {
           }
         />
 
-        <div className="flex gap-2 border-b border-border pb-2">
+        <div className="flex gap-2 border-b border-border pb-2 overflow-x-auto">
           {(["todas", "pendente", "andamento", "aprovado"] as const).map((f) => (
             <button
               key={f}
