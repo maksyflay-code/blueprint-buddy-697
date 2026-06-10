@@ -77,11 +77,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Vetor ERP — Locação de Equipamentos de Engenharia" },
+      { title: "Vetor ERP" },
       { name: "description", content: "Plataforma operacional para gestão de frota, locações, manutenção e solicitações internas." },
       { property: "og:title", content: "Vetor ERP" },
-      { property: "og:description", content: "ERP para empresas de engenharia que alugam equipamentos." },
+      { property: "og:description", content: "Plataforma operacional para gestão de frota, locações, manutenção e solicitações internas." },
       { property: "og:type", content: "website" },
+      { name: "twitter:title", content: "Vetor ERP" },
+      { name: "twitter:description", content: "Plataforma operacional para gestão de frota, locações, manutenção e solicitações internas." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3b75757d-3f1e-4d2b-be95-49a4fdcfa24c/id-preview-7d1fcbd5--1542ec68-04a7-40f1-83e4-8b9ecb5af09c.lovable.app-1781116382604.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3b75757d-3f1e-4d2b-be95-49a4fdcfa24c/id-preview-7d1fcbd5--1542ec68-04a7-40f1-83e4-8b9ecb5af09c.lovable.app-1781116382604.png" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
