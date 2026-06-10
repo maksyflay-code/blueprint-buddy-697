@@ -112,7 +112,7 @@ function FinanceiroPage() {
               Recebíveis por Contrato
             </h3>
           </div>
-          <table className="w-full text-xs">
+          <div className="overflow-x-auto"><table className="w-full text-xs">
             <thead className="bg-accent/20">
               <tr className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                 <th className="px-6 py-3 text-left">Contrato</th>
