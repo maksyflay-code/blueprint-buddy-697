@@ -14,6 +14,7 @@ import { Route as ObrasRouteImport } from './routes/obras'
 import { Route as ManutencaoRouteImport } from './routes/manutencao'
 import { Route as LocacoesRouteImport } from './routes/locacoes'
 import { Route as LicitacoesRouteImport } from './routes/licitacoes'
+import { Route as FrotaInternaRouteImport } from './routes/frota-interna'
 import { Route as FinanceiroRouteImport } from './routes/financeiro'
 import { Route as EquipeRouteImport } from './routes/equipe'
 import { Route as EquipamentosRouteImport } from './routes/equipamentos'
@@ -45,6 +46,11 @@ const LocacoesRoute = LocacoesRouteImport.update({
 const LicitacoesRoute = LicitacoesRouteImport.update({
   id: '/licitacoes',
   path: '/licitacoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FrotaInternaRoute = FrotaInternaRouteImport.update({
+  id: '/frota-interna',
+  path: '/frota-interna',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FinanceiroRoute = FinanceiroRouteImport.update({
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/equipamentos': typeof EquipamentosRoute
   '/equipe': typeof EquipeRoute
   '/financeiro': typeof FinanceiroRoute
+  '/frota-interna': typeof FrotaInternaRoute
   '/licitacoes': typeof LicitacoesRoute
   '/locacoes': typeof LocacoesRoute
   '/manutencao': typeof ManutencaoRoute
@@ -105,6 +112,7 @@ export interface FileRoutesByTo {
   '/equipamentos': typeof EquipamentosRoute
   '/equipe': typeof EquipeRoute
   '/financeiro': typeof FinanceiroRoute
+  '/frota-interna': typeof FrotaInternaRoute
   '/licitacoes': typeof LicitacoesRoute
   '/locacoes': typeof LocacoesRoute
   '/manutencao': typeof ManutencaoRoute
@@ -120,6 +128,7 @@ export interface FileRoutesById {
   '/equipamentos': typeof EquipamentosRoute
   '/equipe': typeof EquipeRoute
   '/financeiro': typeof FinanceiroRoute
+  '/frota-interna': typeof FrotaInternaRoute
   '/licitacoes': typeof LicitacoesRoute
   '/locacoes': typeof LocacoesRoute
   '/manutencao': typeof ManutencaoRoute
@@ -136,6 +145,7 @@ export interface FileRouteTypes {
     | '/equipamentos'
     | '/equipe'
     | '/financeiro'
+    | '/frota-interna'
     | '/licitacoes'
     | '/locacoes'
     | '/manutencao'
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/equipamentos'
     | '/equipe'
     | '/financeiro'
+    | '/frota-interna'
     | '/licitacoes'
     | '/locacoes'
     | '/manutencao'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/equipamentos'
     | '/equipe'
     | '/financeiro'
+    | '/frota-interna'
     | '/licitacoes'
     | '/locacoes'
     | '/manutencao'
@@ -179,6 +191,7 @@ export interface RootRouteChildren {
   EquipamentosRoute: typeof EquipamentosRoute
   EquipeRoute: typeof EquipeRoute
   FinanceiroRoute: typeof FinanceiroRoute
+  FrotaInternaRoute: typeof FrotaInternaRoute
   LicitacoesRoute: typeof LicitacoesRoute
   LocacoesRoute: typeof LocacoesRoute
   ManutencaoRoute: typeof ManutencaoRoute
@@ -221,6 +234,13 @@ declare module '@tanstack/react-router' {
       path: '/licitacoes'
       fullPath: '/licitacoes'
       preLoaderRoute: typeof LicitacoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/frota-interna': {
+      id: '/frota-interna'
+      path: '/frota-interna'
+      fullPath: '/frota-interna'
+      preLoaderRoute: typeof FrotaInternaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/financeiro': {
@@ -283,6 +303,7 @@ const rootRouteChildren: RootRouteChildren = {
   EquipamentosRoute: EquipamentosRoute,
   EquipeRoute: EquipeRoute,
   FinanceiroRoute: FinanceiroRoute,
+  FrotaInternaRoute: FrotaInternaRoute,
   LicitacoesRoute: LicitacoesRoute,
   LocacoesRoute: LocacoesRoute,
   ManutencaoRoute: ManutencaoRoute,
@@ -292,3 +313,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

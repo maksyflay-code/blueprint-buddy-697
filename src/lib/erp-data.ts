@@ -719,3 +719,176 @@ export const pipelineFunil = [
   { etapa: "Habilitada", quantidade: 2, valor: 9420000 },
   { etapa: "Vencida (mês)", quantidade: 2, valor: 4180000 },
 ];
+
+// ============ FROTA INTERNA / ADMINISTRATIVA ============
+export type FrotaInternaStatus = "ativo" | "manutencao" | "parado";
+export type FrotaInternaTipo = "Diretoria" | "Administrativo" | "Operacional" | "Carga" | "Apoio";
+
+export interface VeiculoInterno {
+  id: string;
+  placa: string;
+  modelo: string;
+  ano: number;
+  tipo: FrotaInternaTipo;
+  setor: string;
+  motorista: string;
+  motoristaCargo: string;
+  km: number;
+  ultimaManutencao: string;
+  proximaManutencao: string;
+  proximaRevisaoKm: number;
+  vencimentoIPVA: string;
+  vencimentoSeguro: string;
+  status: FrotaInternaStatus;
+  combustivel: "Diesel" | "Gasolina" | "Flex" | "Elétrico";
+  observacao?: string;
+}
+
+export const frotaInterna: VeiculoInterno[] = [
+  {
+    id: "fi-1",
+    placa: "RKZ-4A21",
+    modelo: "Toyota Hilux SRX 4x4",
+    ano: 2024,
+    tipo: "Diretoria",
+    setor: "Direção / Engenharia",
+    motorista: "Eng. Ricardo Moraes",
+    motoristaCargo: "Gestor de Frota",
+    km: 18420,
+    ultimaManutencao: "18 Mar 2026",
+    proximaManutencao: "18 Set 2026",
+    proximaRevisaoKm: 25000,
+    vencimentoIPVA: "15 Mai 2026",
+    vencimentoSeguro: "02 Jul 2026",
+    status: "ativo",
+    combustivel: "Diesel",
+  },
+  {
+    id: "fi-2",
+    placa: "MKF-2C09",
+    modelo: "Fiat Toro Volcano",
+    ano: 2023,
+    tipo: "Administrativo",
+    setor: "Comercial / Licitações",
+    motorista: "Carla Bittencourt",
+    motoristaCargo: "Coord. Comercial",
+    km: 42180,
+    ultimaManutencao: "02 Fev 2026",
+    proximaManutencao: "02 Ago 2026",
+    proximaRevisaoKm: 50000,
+    vencimentoIPVA: "20 Abr 2026",
+    vencimentoSeguro: "12 Jun 2026",
+    status: "ativo",
+    combustivel: "Diesel",
+  },
+  {
+    id: "fi-3",
+    placa: "BVT-7G54",
+    modelo: "Volkswagen Saveiro CD",
+    ano: 2022,
+    tipo: "Operacional",
+    setor: "Apoio Obras",
+    motorista: "Diego Almeida",
+    motoristaCargo: "Encarregado de Obra",
+    km: 78420,
+    ultimaManutencao: "12 Mai 2026",
+    proximaManutencao: "12 Jul 2026",
+    proximaRevisaoKm: 85000,
+    vencimentoIPVA: "10 Mar 2026",
+    vencimentoSeguro: "30 Set 2026",
+    status: "ativo",
+    combustivel: "Flex",
+  },
+  {
+    id: "fi-4",
+    placa: "QPL-1J88",
+    modelo: "Mercedes Sprinter 415",
+    ano: 2021,
+    tipo: "Carga",
+    setor: "Logística",
+    motorista: "Wellington Souza",
+    motoristaCargo: "Motorista Categoria D",
+    km: 124800,
+    ultimaManutencao: "28 Mai 2026",
+    proximaManutencao: "HOJE",
+    proximaRevisaoKm: 130000,
+    vencimentoIPVA: "08 Fev 2026",
+    vencimentoSeguro: "18 Ago 2026",
+    status: "manutencao",
+    combustivel: "Diesel",
+    observacao: "Revisão de embreagem e suspensão traseira",
+  },
+  {
+    id: "fi-5",
+    placa: "TXR-3F70",
+    modelo: "Renault Kwid Zen",
+    ano: 2024,
+    tipo: "Administrativo",
+    setor: "RH / Equipe",
+    motorista: "Patrícia Lemos",
+    motoristaCargo: "Analista de RH",
+    km: 9120,
+    ultimaManutencao: "05 Jan 2026",
+    proximaManutencao: "05 Jan 2027",
+    proximaRevisaoKm: 20000,
+    vencimentoIPVA: "25 Jun 2026",
+    vencimentoSeguro: "14 Nov 2026",
+    status: "ativo",
+    combustivel: "Flex",
+  },
+  {
+    id: "fi-6",
+    placa: "ZNB-5D32",
+    modelo: "Iveco Daily 70C17",
+    ano: 2020,
+    tipo: "Carga",
+    setor: "Almoxarifado",
+    motorista: "—",
+    motoristaCargo: "Não alocado",
+    km: 168450,
+    ultimaManutencao: "22 Abr 2026",
+    proximaManutencao: "22 Out 2026",
+    proximaRevisaoKm: 175000,
+    vencimentoIPVA: "12 Jan 2026",
+    vencimentoSeguro: "20 Jul 2026",
+    status: "parado",
+    combustivel: "Diesel",
+    observacao: "Aguardando alocação de motorista categoria D",
+  },
+  {
+    id: "fi-7",
+    placa: "HYG-9B17",
+    modelo: "Chevrolet S10 LTZ",
+    ano: 2023,
+    tipo: "Apoio",
+    setor: "Manutenção / Oficina",
+    motorista: "Antônio Pereira",
+    motoristaCargo: "Mecânico Líder",
+    km: 54300,
+    ultimaManutencao: "10 Jun 2026",
+    proximaManutencao: "10 Dez 2026",
+    proximaRevisaoKm: 60000,
+    vencimentoIPVA: "30 Mar 2026",
+    vencimentoSeguro: "05 Out 2026",
+    status: "ativo",
+    combustivel: "Diesel",
+  },
+  {
+    id: "fi-8",
+    placa: "LPS-6H45",
+    modelo: "BYD Dolphin Plus",
+    ano: 2025,
+    tipo: "Diretoria",
+    setor: "Financeiro",
+    motorista: "Sra. Helena Vieira",
+    motoristaCargo: "Diretora Financeira",
+    km: 3200,
+    ultimaManutencao: "—",
+    proximaManutencao: "01 Dez 2026",
+    proximaRevisaoKm: 10000,
+    vencimentoIPVA: "Isento 2026",
+    vencimentoSeguro: "22 Dez 2026",
+    status: "ativo",
+    combustivel: "Elétrico",
+  },
+];

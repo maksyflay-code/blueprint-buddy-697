@@ -16,6 +16,7 @@ import {
   HardHat,
   UserCog,
   ShoppingCart,
+  Car,
 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
@@ -29,6 +30,7 @@ const navComercial = [
 const navOperacional = [
   { to: "/equipamentos", label: "Equipamentos", icon: Truck },
   { to: "/locacoes", label: "Locações", icon: FileText },
+  { to: "/frota-interna", label: "Frota Interna", icon: Car, badge: "1" },
   { to: "/manutencao", label: "Manutenção", icon: Wrench, badge: "3" },
   { to: "/compras", label: "Compras", icon: ShoppingCart },
 ] as const;
