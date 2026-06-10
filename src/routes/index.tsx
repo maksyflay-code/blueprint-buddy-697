@@ -161,14 +161,14 @@ function Dashboard() {
                     className="bg-card border border-border rounded-md overflow-hidden flex animate-in-up hover:border-primary/40 transition-colors"
                     style={{ animationDelay: `${350 + i * 50}ms` }}
                   >
-                    <div className="w-32 bg-accent grid place-items-center border-r border-border shrink-0">
+                    <div className="w-24 sm:w-32 bg-accent grid place-items-center border-r border-border shrink-0">
                       <img
                         src={e.imagem}
                         alt={e.nome}
                         loading="lazy"
                         width={128}
                         height={128}
-                        className="object-contain max-h-32 p-2"
+                        className="object-contain max-h-24 sm:max-h-32 p-2"
                       />
                     </div>
                     <div className="p-4 flex-1 min-w-0">
