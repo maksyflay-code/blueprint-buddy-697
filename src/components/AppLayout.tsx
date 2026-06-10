@@ -17,6 +17,7 @@ import {
   UserCog,
   ShoppingCart,
   Car,
+} from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
 const navComercial = [
