@@ -12,20 +12,31 @@ import {
   Search,
   Menu,
   X,
+  Gavel,
+  HardHat,
+  UserCog,
+  ShoppingCart,
 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
+const navComercial = [
+  { to: "/", label: "Painel Executivo", icon: LayoutDashboard },
+  { to: "/licitacoes", label: "Licitações", icon: Gavel, badge: "4" },
+  { to: "/obras", label: "Obras / Projetos", icon: HardHat },
+  { to: "/clientes", label: "Clientes", icon: Users },
+] as const;
+
 const navOperacional = [
-  { to: "/", label: "Painel de Controle", icon: LayoutDashboard },
   { to: "/equipamentos", label: "Equipamentos", icon: Truck },
   { to: "/locacoes", label: "Locações", icon: FileText },
   { to: "/manutencao", label: "Manutenção", icon: Wrench, badge: "3" },
+  { to: "/compras", label: "Compras", icon: ShoppingCart },
 ] as const;
 
 const navAdmin = [
   { to: "/solicitacoes", label: "Solicitações Internas", icon: Inbox, badge: "8" },
   { to: "/documentos", label: "Documentos", icon: FolderArchive },
-  { to: "/clientes", label: "Clientes", icon: Users },
+  { to: "/equipe", label: "Equipe / RH", icon: UserCog },
   { to: "/financeiro", label: "Financeiro", icon: Banknote },
 ] as const;
 
