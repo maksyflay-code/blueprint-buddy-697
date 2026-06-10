@@ -53,40 +53,39 @@ export function RevenueChart({ data }: { data: RevenuePoint[] }) {
         <AreaChart data={data} margin={{ top: 10, right: 8, left: -16, bottom: 0 }}>
           <defs>
             <linearGradient id="gradLocacao" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.6} />
-              <stop offset="100%" stopColor="var(--primary)" stopOpacity={0.02} />
+              <stop offset="0%" stopColor="oklch(0.68 0.18 45)" stopOpacity={0.6} />
+              <stop offset="100%" stopColor="oklch(0.68 0.18 45)" stopOpacity={0.02} />
             </linearGradient>
             <linearGradient id="gradObras" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--success)" stopOpacity={0.55} />
-              <stop offset="100%" stopColor="var(--success)" stopOpacity={0.02} />
+              <stop offset="0%" stopColor="oklch(0.7 0.16 155)" stopOpacity={0.55} />
+              <stop offset="100%" stopColor="oklch(0.7 0.16 155)" stopOpacity={0.02} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="2 4" stroke="var(--border)" vertical={false} opacity={0.6} />
+          <CartesianGrid strokeDasharray="2 4" stroke="oklch(0.9 0.01 264)" vertical={false} opacity={0.6} />
           <XAxis
             dataKey="mes"
-            stroke="var(--muted-foreground)"
+            stroke="oklch(0.55 0.02 264)"
             fontSize={10}
             tickLine={false}
             axisLine={false}
-            style={{ fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.05em" }}
+            style={{ textTransform: "uppercase", letterSpacing: "0.05em" }}
           />
           <YAxis
-            stroke="var(--muted-foreground)"
+            stroke="oklch(0.55 0.02 264)"
             fontSize={10}
             tickLine={false}
             axisLine={false}
             tickFormatter={(v) => `${v}k`}
-            style={{ fontFamily: "var(--font-mono)" }}
           />
           <Tooltip
             content={<CustomTooltip />}
-            cursor={{ stroke: "var(--primary)", strokeWidth: 1, strokeDasharray: "3 3" }}
+            cursor={{ stroke: "oklch(0.68 0.18 45)", strokeWidth: 1, strokeDasharray: "3 3" }}
           />
           <Area
             type="monotone"
             dataKey="locacao"
             stackId="1"
-            stroke="var(--primary)"
+            stroke="oklch(0.68 0.18 45)"
             strokeWidth={2}
             fill="url(#gradLocacao)"
           />
@@ -94,7 +93,7 @@ export function RevenueChart({ data }: { data: RevenuePoint[] }) {
             type="monotone"
             dataKey="obras"
             stackId="1"
-            stroke="var(--success)"
+            stroke="oklch(0.7 0.16 155)"
             strokeWidth={2}
             fill="url(#gradObras)"
           />
