@@ -60,11 +60,11 @@ function Dashboard() {
     name: c.categoria,
     value: c.total,
     color: [
-      "hsl(var(--primary))",
-      "hsl(var(--primary) / 0.75)",
-      "hsl(var(--primary) / 0.55)",
-      "hsl(var(--primary) / 0.38)",
-      "hsl(var(--primary) / 0.22)",
+      "var(--primary)",
+      "color-mix(in oklab, var(--primary) 75%, transparent)",
+      "color-mix(in oklab, var(--success) 80%, transparent)",
+      "color-mix(in oklab, var(--primary) 45%, transparent)",
+      "color-mix(in oklab, var(--success) 45%, transparent)",
     ][i % 5],
   }));
   const utilMedia = Math.round(
