@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 export interface FunnelStage {
   etapa: string;
   quantidade: number;
@@ -12,8 +10,6 @@ function fmtM(v: number) {
 }
 
 export function FunnelChartCustom({ data }: { data: FunnelStage[] }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
   const max = Math.max(...data.map((d) => d.valor));
 
   return (
