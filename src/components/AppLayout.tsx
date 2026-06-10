@@ -1,0 +1,185 @@
+import { Link, Outlet, useRouterState } from "@tanstack/react-router";
+import {
+  LayoutDashboard,
+  Truck,
+  FileText,
+  Wrench,
+  Inbox,
+  FolderArchive,
+  Users,
+  Banknote,
+  Bell,
+  Search,
+} from "lucide-react";
+import type { ReactNode } from "react";
+
+const navOperacional = [
+  { to: "/", label: "Painel de Controle", icon: LayoutDashboard },
+  { to: "/equipamentos", label: "Equipamentos", icon: Truck },
+  { to: "/locacoes", label: "Locações", icon: FileText },
+  { to: "/manutencao", label: "Manutenção", icon: Wrench, badge: "3" },
+] as const;
+
+const navAdmin = [
+  { to: "/solicitacoes", label: "Solicitações Internas", icon: Inbox, badge: "8" },
+  { to: "/documentos", label: "Documentos", icon: FolderArchive },
+  { to: "/clientes", label: "Clientes", icon: Users },
+  { to: "/financeiro", label: "Financeiro", icon: Banknote },
+] as const;
+
+function NavItem({
+  to,
+  label,
+  icon: Icon,
+  badge,
+  active,
+}: {
+  to: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  badge?: string;
+  active: boolean;
+}) {
+  return (
+    <Link
+      to={to}
+      className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
+        active
+          ? "bg-accent text-foreground font-medium border border-border/60"
+          : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+      }`}
+    >
+      <Icon className="size-4" strokeWidth={1.75} />
+      <span className="flex-1 truncate">{label}</span>
+      {badge && (
+        <span className="text-[10px] bg-destructive/10 text-destructive px-1.5 py-0.5 rounded font-mono font-medium">
+          {badge}
+        </span>
+      )}
+    </Link>
+  );
+}
+
+export function AppLayout({ children }: { children?: ReactNode }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isActive = (to: string) => (to === "/" ? pathname === "/" : pathname.startsWith(to));
+
+  return (
+    <div className="flex min-h-screen bg-background text-foreground selection:bg-primary/20">
+      <aside className="w-64 border-r border-border flex flex-col sticky top-0 h-screen bg-sidebar shrink-0">
+        <div className="p-6 flex items-center gap-3">
+          <div className="size-8 bg-primary grid place-items-center text-primary-foreground font-bold rounded-sm font-mono">
+            V
+          </div>
+          <div className="flex flex-col leading-tight">
+            <span className="font-bold tracking-tight text-base">VETOR ERP</span>
+            <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">
+              Engenharia
+            </span>
+          </div>
+        </div>
+
+        <nav className="flex-1 px-4 space-y-1 overflow-y-auto">
+          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-2 mb-2">
+            Operacional
+          </div>
+          {navOperacional.map((item) => (
+            <NavItem key={item.to} {...item} active={isActive(item.to)} />
+          ))}
+
+          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-2 mt-8 mb-2">
+            Administrativo
+          </div>
+          {navAdmin.map((item) => (
+            <NavItem key={item.to} {...item} active={isActive(item.to)} />
+          ))}
+        </nav>
+
+        <div className="p-4 border-t border-border">
+          <div className="flex items-center gap-3 px-2 py-2">
+            <div className="size-9 rounded-full bg-gradient-to-br from-primary/40 to-primary grid place-items-center text-primary-foreground text-xs font-bold">
+              RM
+            </div>
+            <div className="flex flex-col min-w-0">
+              <span className="text-xs font-semibold truncate">Eng. Ricardo M.</span>
+              <span className="text-[10px] text-muted-foreground truncate">Gestor de Frota</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main className="flex-1 flex flex-col min-w-0">
+        <header className="h-16 border-b border-border bg-card flex items-center justify-between px-8 sticky top-0 z-10 backdrop-blur">
+          <div className="flex items-center gap-4 w-full max-w-xl">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Pesquisar frota, contratos ou documentos..."
+                className="w-full bg-accent/50 border-none rounded-md py-2 pl-9 pr-4 text-sm focus:ring-2 focus:ring-primary/30 outline-none"
+              />
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-2 text-[10px] font-mono text-muted-foreground uppercase">
+              <span className="size-1.5 rounded-full bg-success pulse-dot" />
+              Servidor: <span className="text-success">Online</span>
+            </div>
+            <button className="size-9 grid place-items-center hover:bg-accent rounded-full text-muted-foreground transition-colors relative">
+              <Bell className="size-4" />
+              <span className="absolute top-2 right-2 size-1.5 bg-primary rounded-full" />
+            </button>
+          </div>
+        </header>
+
+        <div className="flex-1 overflow-y-auto">{children ?? <Outlet />}</div>
+      </main>
+    </div>
+  );
+}
+
+export function PageHeader({
+  title,
+  subtitle,
+  actions,
+}: {
+  title: string;
+  subtitle?: string;
+  actions?: ReactNode;
+}) {
+  return (
+    <div className="flex items-end justify-between gap-4 mb-8">
+      <div>
+        <div className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-2">
+          Vetor ERP / {title}
+        </div>
+        <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
+        {subtitle && <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>}
+      </div>
+      {actions && <div className="flex items-center gap-2">{actions}</div>}
+    </div>
+  );
+}
+
+export function StatusBadge({
+  variant,
+  children,
+}: {
+  variant: "success" | "warning" | "destructive" | "muted" | "primary";
+  children: ReactNode;
+}) {
+  const styles = {
+    success: "bg-success/15 text-success",
+    warning: "bg-warning/20 text-warning-foreground",
+    destructive: "bg-destructive/15 text-destructive",
+    muted: "bg-muted text-muted-foreground",
+    primary: "bg-primary/15 text-primary",
+  };
+  return (
+    <span
+      className={`px-1.5 py-0.5 text-[9px] font-bold rounded uppercase tracking-tighter ${styles[variant]}`}
+    >
+      {children}
+    </span>
+  );
+}
