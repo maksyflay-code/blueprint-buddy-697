@@ -15,7 +15,7 @@ function fmtBRL(v: number) {
 function ClientesPage() {
   return (
     <AppLayout>
-      <div className="p-8 space-y-6">
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6">
         <PageHeader
           title="Clientes"
           subtitle={`${clientes.length} clientes cadastrados na base`}
