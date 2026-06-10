@@ -36,26 +36,26 @@ function Dashboard() {
 
   return (
     <AppLayout>
-      <div className="p-8 space-y-8">
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8">
         {/* Header row */}
-        <div className="flex items-end justify-between gap-4">
-          <div>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div className="min-w-0">
             <div className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-2">
               Operação / Painel de Controle
             </div>
-            <h1 className="text-2xl font-bold tracking-tight">Bom dia, Ricardo</h1>
-            <p className="text-sm text-muted-foreground mt-1">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Bom dia, Ricardo</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
               {kpis.devolucoesHoje} devoluções previstas hoje · {kpis.solicitacoesPendentes} solicitações aguardando.
             </p>
           </div>
-          <button className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm">
+          <button className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm shrink-0">
             <Plus className="size-4" />
             Nova Locação
           </button>
         </div>
 
         {/* KPI Grid */}
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {[
             { label: "Receita Mensal", value: fmtBRL(kpis.receitaMensal), delta: `+${kpis.receitaDelta}% vs mês anterior`, deltaColor: "text-success", delay: 50 },
             { label: "Taxa de Utilização", value: `${kpis.utilizacao}%`, bar: kpis.utilizacao, delay: 100 },
