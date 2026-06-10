@@ -60,11 +60,11 @@ function Dashboard() {
     name: c.categoria,
     value: c.total,
     color: [
-      "var(--primary)",
-      "color-mix(in oklab, var(--primary) 75%, transparent)",
-      "color-mix(in oklab, var(--success) 80%, transparent)",
-      "color-mix(in oklab, var(--primary) 45%, transparent)",
-      "color-mix(in oklab, var(--success) 45%, transparent)",
+      "oklch(0.68 0.18 45)",
+      "oklch(0.75 0.14 45)",
+      "oklch(0.7 0.16 155)",
+      "oklch(0.82 0.1 45)",
+      "oklch(0.82 0.1 155)",
     ][i % 5],
   }));
   const utilMedia = Math.round(
