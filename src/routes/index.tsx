@@ -1,15 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { AppLayout, StatusBadge } from "@/components/AppLayout";
+import { RevenueChart } from "@/components/charts/RevenueChart";
+import { FunnelChartCustom } from "@/components/charts/FunnelChart";
+import { UtilizationDonut } from "@/components/charts/UtilizationDonut";
 import {
   kpis,
   kpisExecutivo,
-  receitaSerie,
   obras,
   licitacoes,
   solicitacoes,
   equipamentos,
   pipelineFunil,
+  utilizacaoPorCategoria,
 } from "@/lib/erp-data";
 import {
   ArrowUpRight,
@@ -44,8 +47,29 @@ function fmtM(v: number) {
 }
 
 function Dashboard() {
-  const maxReceita = Math.max(...receitaSerie.map((r) => r.valor));
   const receitaTotal = kpisExecutivo.receitaLocacao + kpisExecutivo.receitaObras;
+  const receitaData = [
+    { mes: "Jul", locacao: 198, obras: 1420 },
+    { mes: "Ago", locacao: 215, obras: 1580 },
+    { mes: "Set", locacao: 240, obras: 1720 },
+    { mes: "Out", locacao: 232, obras: 1810 },
+    { mes: "Nov", locacao: 253, obras: 1690 },
+    { mes: "Dez", locacao: 284, obras: 1840 },
+  ];
+  const utilData = utilizacaoPorCategoria.map((c, i) => ({
+    name: c.categoria,
+    value: c.total,
+    color: [
+      "hsl(var(--primary))",
+      "hsl(var(--primary) / 0.75)",
+      "hsl(var(--primary) / 0.55)",
+      "hsl(var(--primary) / 0.38)",
+      "hsl(var(--primary) / 0.22)",
+    ][i % 5],
+  }));
+  const utilMedia = Math.round(
+    utilizacaoPorCategoria.reduce((a, c) => a + c.percentual, 0) / utilizacaoPorCategoria.length
+  );
   const obrasAtivas = obras.filter((o) => o.status === "execucao");
   const licitacoesProximas = licitacoes
     .filter((l) => ["monitorando", "preparando", "enviada"].includes(l.status))
