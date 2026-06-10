@@ -138,7 +138,7 @@ function SolicitacoesPage() {
           </div>
 
           {/* Quick request panel */}
-          <div className="space-y-4 sticky top-20 self-start">
+          <div className="space-y-4 lg:sticky lg:top-20 lg:self-start">
             <div className="bg-card border border-border rounded-md p-5">
               <h3 className="text-sm font-bold mb-1">Nova Solicitação Rápida</h3>
               <p className="text-xs text-muted-foreground mb-4">
