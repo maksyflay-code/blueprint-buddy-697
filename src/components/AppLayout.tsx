@@ -93,15 +93,22 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         </div>
       </div>
 
-      <nav className="flex-1 px-4 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-4 space-y-1 overflow-y-auto pb-4">
         <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-2 mb-2">
+          Comercial & Obras
+        </div>
+        {navComercial.map((item) => (
+          <NavItem key={item.to} {...item} active={isActive(item.to)} onClick={onNavigate} />
+        ))}
+
+        <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-2 mt-6 mb-2">
           Operacional
         </div>
         {navOperacional.map((item) => (
           <NavItem key={item.to} {...item} active={isActive(item.to)} onClick={onNavigate} />
         ))}
 
-        <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-2 mt-8 mb-2">
+        <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-2 mt-6 mb-2">
           Administrativo
         </div>
         {navAdmin.map((item) => (
